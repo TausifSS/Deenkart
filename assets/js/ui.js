@@ -1318,13 +1318,11 @@ const UI = {
     // 4. Update header badge
     UI.updateHeaderBadges();
 
-    // 5. Navigate immediately to Order Success view in the website
+    // 5. Navigate to Order Success view in the website
     Router.navigate(`#order-success/${orderId}`);
 
-    // 6. Launch WhatsApp app directly (native app intent, no browser history hijack!)
-    setTimeout(() => {
-      WhatsAppService.sendOrder(newOrder);
-    }, 150);
+    // 6. Launch WhatsApp app IMMEDIATELY (zero delay, direct native intent!)
+    WhatsAppService.sendOrder(newOrder);
   },
 
   executeWhatsAppOrder() {

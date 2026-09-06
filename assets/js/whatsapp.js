@@ -117,19 +117,11 @@ Could you please check if it is available or can be arranged for delivery? Jazak
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     if (isMobile) {
-      // Direct native WhatsApp app URI - launches WhatsApp directly without loading api.whatsapp.com web page!
-      const nativeAppUrl = `whatsapp://send?phone=${phone}&text=${encoded}`;
-      const link = document.createElement('a');
-      link.href = nativeAppUrl;
-      document.body.appendChild(link);
-      link.click();
-      setTimeout(() => {
-        if (document.body.contains(link)) document.body.removeChild(link);
-      }, 500);
+      // Instant native launch - zero delay!
+      window.location.href = `whatsapp://send?phone=${phone}&text=${encoded}`;
     } else {
       // Desktop: Open WhatsApp Web in new tab
-      const webUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${encoded}`;
-      window.open(webUrl, '_blank', 'noopener,noreferrer');
+      window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encoded}`, '_blank');
     }
   },
 
