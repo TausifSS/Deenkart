@@ -288,7 +288,7 @@ const UI = {
         <div style="grid-column: 1/-1; text-align:center; padding: 48px 16px; background:var(--color-white); border-radius:var(--radius-xl); border:1px solid var(--color-border);">
           <div style="font-size:3rem; margin-bottom:12px;">📦</div>
           <h3 style="font-size:1.1rem; font-weight:700; color:var(--color-charcoal); margin-bottom:6px;">New stock arriving soon!</h3>
-          <p style="font-size:0.86rem; color:var(--color-charcoal-muted); margin-bottom:18px;">Looking for something specific in this category? We deliver across Shikrapur & Shirur Taluka!</p>
+          <p style="font-size:0.86rem; color:var(--color-charcoal-muted); margin-bottom:18px;">Looking for something specific in this category? We deliver across Koregaon to Shirur!</p>
           <button class="btn btn-primary" onclick="requestProductViaWhatsApp('Islamic Item')">
             <i class="fa-brands fa-whatsapp"></i> Request Product via WhatsApp
           </button>
@@ -714,14 +714,14 @@ const UI = {
 
         <div class="timeline-step ${isDelivered ? 'completed' : 'current'}">
           <div class="timeline-dot"><i class="fa-solid fa-truck"></i></div>
-          <div class="timeline-step-title">Out for Delivery in Shikrapur</div>
+          <div class="timeline-step-title">Out for Delivery (Koregaon to Shirur)</div>
           <div class="timeline-step-desc">Our delivery partner is on the way (PIN: 412208)</div>
         </div>
 
         <div class="timeline-step ${isDelivered ? 'completed' : ''}">
           <div class="timeline-dot"><i class="fa-solid fa-house"></i></div>
           <div class="timeline-step-title">Delivered to Doorstep</div>
-          <div class="timeline-step-desc">Flat 203, Naya Nagar, Shikrapur</div>
+          <div class="timeline-step-desc">Doorstep delivery completed</div>
         </div>
       </div>
 
@@ -789,7 +789,7 @@ const UI = {
           <span>₹${order.subtotal || order.total}</span>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:0.84rem; color:#64748B; margin-bottom:6px;">
-          <span>Delivery in Shikrapur:</span>
+          <span>Delivery (Koregaon to Shirur):</span>
           <span style="color:var(--color-emerald); font-weight:600;">FREE</span>
         </div>
         <div style="display:flex; justify-content:space-between; font-size:1.05rem; font-weight:800; color:var(--color-charcoal);">
@@ -882,6 +882,7 @@ const UI = {
     const houseInput = document.getElementById("edit-profile-house");
     const areaInput = document.getElementById("edit-profile-area");
     const landmarkInput = document.getElementById("edit-profile-landmark");
+    const pincodeInput = document.getElementById("edit-profile-pincode");
 
     if (nameInput) nameInput.value = customer.name || "";
     if (phoneInput) phoneInput.value = customer.whatsapp || "";
@@ -889,6 +890,7 @@ const UI = {
     if (houseInput) houseInput.value = customer.house || "";
     if (areaInput) areaInput.value = customer.area || "";
     if (landmarkInput) landmarkInput.value = customer.landmark || "";
+    if (pincodeInput) pincodeInput.value = customer.pincode || "412208";
 
     const modal = document.getElementById("edit-profile-modal");
     if (modal) modal.classList.add("open");
@@ -906,6 +908,7 @@ const UI = {
     const house = document.getElementById("edit-profile-house")?.value.trim() || "";
     const area = document.getElementById("edit-profile-area")?.value.trim() || "";
     const landmark = document.getElementById("edit-profile-landmark")?.value.trim() || "";
+    const pincode = document.getElementById("edit-profile-pincode")?.value.trim() || "412208";
 
     if (!name || !phone) {
       alert("Please enter both your Full Name and WhatsApp phone number!");
@@ -919,7 +922,7 @@ const UI = {
       house,
       area,
       landmark,
-      pincode: "412208",
+      pincode: pincode,
       city: "Shikrapur"
     };
 
@@ -940,6 +943,7 @@ const UI = {
     const houseInput = document.getElementById("checkout-house");
     const areaInput = document.getElementById("checkout-area");
     const landmarkInput = document.getElementById("checkout-landmark");
+    const pincodeInput = document.getElementById("checkout-pincode");
     const locationInput = document.getElementById("checkout-location-link");
 
     if (nameInput) nameInput.value = customer.name || "";
@@ -947,6 +951,7 @@ const UI = {
     if (houseInput) houseInput.value = customer.house || "";
     if (areaInput) areaInput.value = customer.area || "";
     if (landmarkInput) landmarkInput.value = customer.landmark || "";
+    if (pincodeInput) pincodeInput.value = customer.pincode || "412208";
     if (locationInput) locationInput.value = customer.locationLink || "";
 
     const subtotalEl = document.getElementById("checkout-subtotal");
@@ -964,9 +969,9 @@ const UI = {
     if (freeProgressBar) freeProgressBar.style.width = `${summary.freeShippingProgress}%`;
     if (freeProgressText) {
       if (summary.amountNeededForFreeShipping > 0) {
-        freeProgressText.textContent = `Add ₹${summary.amountNeededForFreeShipping} more for FREE Delivery in Shikrapur!`;
+        freeProgressText.textContent = `Add ₹${summary.amountNeededForFreeShipping} more for FREE Delivery (Koregaon to Shirur)!`;
       } else {
-        freeProgressText.textContent = `🎉 You unlocked FREE Delivery in Shikrapur!`;
+        freeProgressText.textContent = `🎉 You unlocked FREE Delivery from Koregaon to Shirur!`;
       }
     }
 
@@ -1018,6 +1023,7 @@ const UI = {
     const house = document.getElementById("checkout-house")?.value.trim();
     const area = document.getElementById("checkout-area")?.value.trim();
     const landmark = document.getElementById("checkout-landmark")?.value.trim() || "";
+    const pincode = document.getElementById("checkout-pincode")?.value.trim() || CONFIG.deliveryPincode;
     const notes = document.getElementById("checkout-notes")?.value.trim() || "";
     const locationLink = document.getElementById("checkout-location-link")?.value.trim() || "";
 
@@ -1027,7 +1033,7 @@ const UI = {
     }
 
     if (!locationLink) {
-      alert("Please provide your Google Maps location link or click '📍 Detect My Location' (Required for accurate Shikrapur delivery)!");
+      alert("Please provide your Google Maps location link or click '📍 Detect My Location' (Required for accurate doorstep delivery)!");
       const locEl = document.getElementById("checkout-location-link");
       if (locEl) locEl.focus();
       return;
@@ -1040,7 +1046,7 @@ const UI = {
       area,
       landmark,
       locationLink,
-      pincode: CONFIG.deliveryPincode,
+      pincode: pincode,
       city: CONFIG.deliveryCity,
       orderNotes: notes
     };

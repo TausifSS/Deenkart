@@ -16,7 +16,7 @@ const CONFIG = {
   deliveryCity: "Shikrapur",
   deliveryState: "Maharashtra",
   deliveryPincode: "412208",
-  deliveryNotice: "Fast delivery in Shikrapur & delivery in Shirur Taluka only",
+  deliveryNotice: "Fast delivery from Koregaon to Shirur",
   
   // Shipping & Pricing
   standardDeliveryFee: 20, // Local Shikrapur delivery ₹20

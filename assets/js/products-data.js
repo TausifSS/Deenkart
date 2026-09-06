@@ -652,29 +652,5 @@ const PRODUCTS_DATA = [
 // Empty initial orders: Real orders will be added when customer checks out
 const INITIAL_SAMPLE_ORDERS = [];
 
-const INITIAL_NOTIFICATIONS = [
-  {
-    id: "notif-1",
-    title: "New Ramadan Collection is Live!",
-    message: "Explore our latest luxury prayer mats, premium ajwa dates, and exclusive attars for Ramadan.",
-    time: "2 hours ago",
-    read: false,
-    type: "promo"
-  },
-  {
-    id: "notif-2",
-    title: "Free Delivery in Shikrapur Today",
-    message: "Place any order above ₹499 and enjoy free doorstep delivery in Shikrapur (PIN: 412208).",
-    time: "1 day ago",
-    read: false,
-    type: "shipping"
-  },
-  {
-    id: "notif-3",
-    title: "Sahih Bukhari 6-Volume Set Restocked",
-    message: "The authentic Arabic-English Darussalam edition is back in stock in limited quantities.",
-    time: "3 days ago",
-    read: true,
-    type: "product"
-  }
-];
+// Empty initial notifications: Real alerts and announcements will be received here
+const INITIAL_NOTIFICATIONS = [];

@@ -585,6 +585,18 @@ function renderNotificationsView() {
   if (!container) return;
 
   const notifs = Storage.getNotifications();
+  if (!notifs || notifs.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center; padding: 48px 16px; background:var(--color-white); border-radius:var(--radius-xl); border:1px solid var(--color-border); margin-bottom:16px;">
+        <div style="font-size:2.8rem; margin-bottom:12px;">🔔</div>
+        <h3 style="font-size:1.1rem; font-weight:800; color:var(--color-charcoal); margin-bottom:6px;">No New Notifications</h3>
+        <p style="font-size:0.86rem; color:var(--color-charcoal-muted); margin-bottom:18px;">You're all caught up! Important store announcements and delivery updates will appear here.</p>
+        <button class="btn btn-primary btn-sm" style="border-radius:var(--radius-full);" onclick="Router.navigate('#home')">Explore Essentials</button>
+      </div>
+    `;
+    return;
+  }
+
   container.innerHTML = notifs.map(n => `
     <div style="background:var(--color-white); border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:16px; margin-bottom:12px; display:flex; gap:14px; align-items:flex-start;">
       <div style="width:40px; height:40px; border-radius:var(--radius-full); background:var(--color-soft-green); color:var(--color-emerald); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0;">

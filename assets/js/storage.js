@@ -199,12 +199,12 @@ const Storage = {
 
   // Notifications
   getNotifications() {
-    const notifs = this.get(CONFIG.storageKeys.notifications, null);
-    if (!notifs) {
-      this.set(CONFIG.storageKeys.notifications, INITIAL_NOTIFICATIONS);
-      return INITIAL_NOTIFICATIONS;
+    const notifs = this.get(CONFIG.storageKeys.notifications, []);
+    const realNotifs = Array.isArray(notifs) ? notifs.filter(n => n && n.id && !n.id.startsWith("notif-")) : [];
+    if (notifs && realNotifs.length !== notifs.length) {
+      this.set(CONFIG.storageKeys.notifications, realNotifs);
     }
-    return notifs;
+    return realNotifs;
   },
 
   markNotificationsRead() {
