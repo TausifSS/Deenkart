@@ -107,25 +107,57 @@ Could you please check if it is available or can be arranged for delivery? Jazak
   },
 
   /**
-   * Launches WhatsApp immediately without popup blocker failure
+  /**
+   * Directly launches WhatsApp with order text without hijacking browser tab
+   */
+  sendOrder(order) {
+    const message = this.buildOrderMessage(order);
+    const encoded = encodeURIComponent(message);
+    const phone = CONFIG.whatsappNumber.replace(/[^0-9]/g, '');
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Direct native WhatsApp app URI - launches WhatsApp directly without loading api.whatsapp.com web page!
+      const nativeAppUrl = `whatsapp://send?phone=${phone}&text=${encoded}`;
+      const link = document.createElement('a');
+      link.href = nativeAppUrl;
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        if (document.body.contains(link)) document.body.removeChild(link);
+      }, 500);
+    } else {
+      // Desktop: Open WhatsApp Web in new tab
+      const webUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${encoded}`;
+      window.open(webUrl, '_blank', 'noopener,noreferrer');
+    }
+  },
+
+  /**
+   * Launches WhatsApp without replacing current page in browser history
    */
   launchUrl(url) {
     if (!url) return;
     try {
-      const link = document.createElement('a');
-      link.href = url;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (isMobile && url.includes("wa.me")) {
+        const parts = url.split("?");
+        const phone = parts[0].replace(/[^0-9]/g, '');
+        const query = parts[1] || '';
+        const nativeUrl = `whatsapp://send?phone=${phone}&${query}`;
+        const link = document.createElement('a');
+        link.href = nativeUrl;
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          if (document.body.contains(link)) document.body.removeChild(link);
+        }, 500);
+        return;
+      }
+
+      window.open(url, '_blank', 'noopener,noreferrer');
     } catch (err) {
       console.error("Direct link click failed:", err);
     }
-
-    // Direct navigation fallback
-    setTimeout(() => {
-      window.location.href = url;
-    }, 150);
   }
 };

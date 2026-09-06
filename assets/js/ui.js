@@ -1309,12 +1309,22 @@ const UI = {
       customer: customer
     };
 
-    // Save order locally and navigate directly to order success (No WhatsApp redirect!)
+    // 1. Save customer details
     Storage.saveCustomer(customer);
+    // 2. Save new order
     Storage.saveOrder(newOrder);
+    // 3. Clear cart
     Storage.clearCart();
+    // 4. Update header badge
     UI.updateHeaderBadges();
+
+    // 5. Navigate immediately to Order Success view in the website
     Router.navigate(`#order-success/${orderId}`);
+
+    // 6. Launch WhatsApp app directly (native app intent, no browser history hijack!)
+    setTimeout(() => {
+      WhatsAppService.sendOrder(newOrder);
+    }, 150);
   },
 
   executeWhatsAppOrder() {
@@ -1325,9 +1335,18 @@ const UI = {
     const order = Storage.getOrderById(orderId);
     const idEl = document.getElementById("success-order-id");
     const totalEl = document.getElementById("success-order-total");
+    const waBtn = document.getElementById("success-whatsapp-btn");
 
     if (idEl) idEl.textContent = orderId || "DK-XXXX";
     if (totalEl && order) totalEl.textContent = `₹${order.total}`;
+    if (waBtn && order) {
+      const message = WhatsAppService.buildOrderMessage(order);
+      const encoded = encodeURIComponent(message);
+      const phone = CONFIG.whatsappNumber.replace(/[^0-9]/g, '');
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      waBtn.href = isMobile ? `whatsapp://send?phone=${phone}&text=${encoded}` : `https://api.whatsapp.com/send?phone=${phone}&text=${encoded}`;
+      waBtn.target = isMobile ? '_self' : '_blank';
+    }
   }
 };
 
