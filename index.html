@@ -27,10 +27,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheets with Cache Busters -->
-  <link rel="stylesheet" href="assets/css/app.bundle.css?v=1.0.7">
-  <link rel="stylesheet" href="assets/css/variables.css?v=1.0.7">
-  <link rel="stylesheet" href="assets/css/style.css?v=1.0.7">
-  <link rel="stylesheet" href="assets/css/components.css?v=1.0.7">
+  <link rel="stylesheet" href="assets/css/app.bundle.css?v=1.0.9">
+  <link rel="stylesheet" href="assets/css/variables.css?v=1.0.9">
+  <link rel="stylesheet" href="assets/css/style.css?v=1.0.9">
+  <link rel="stylesheet" href="assets/css/components.css?v=1.0.9">
 
   <!-- Inline critical search and category dropdown styling to avoid cache lag -->
   <style>
@@ -175,9 +175,9 @@
 
       <!-- User Profile Preview in Sidebar -->
       <div class="sidebar-user-preview" onclick="Router.navigate('#profile')" style="display:flex; align-items:center; gap:12px; padding:16px 20px; background:var(--color-soft-green); border-bottom:1px solid var(--color-border); cursor:pointer;">
-        <div style="width:44px; height:44px; border-radius:50%; background:var(--color-emerald); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.1rem;">T</div>
+        <div id="sidebar-user-initial" style="width:44px; height:44px; border-radius:50%; background:var(--color-emerald); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.1rem;">Y</div>
         <div>
-          <h4 id="sidebar-user-name" style="font-size:0.95rem; font-weight:800; color:var(--color-charcoal); margin:0;">Tausif Shaikh</h4>
+          <h4 id="sidebar-user-name" style="font-size:0.95rem; font-weight:800; color:var(--color-charcoal); margin:0;">Your Name</h4>
           <p style="font-size:0.75rem; color:var(--color-emerald); margin:0; font-weight:700;">View and edit profile <i class="fa-solid fa-chevron-right" style="font-size:0.6rem;"></i></p>
         </div>
       </div>
@@ -738,19 +738,19 @@
           <img src="assets/images/logo.png" alt="DeenKart" class="profile-hero-banner">
           <div class="profile-user-row">
             <div style="display:flex; align-items:center; gap:14px; min-width:0;">
-              <div class="profile-avatar-wrapper">
-                <div class="profile-avatar-circle">T</div>
+              <div class="profile-avatar-wrapper" onclick="UI.openEditProfileModal()" style="cursor:pointer;">
+                <div class="profile-avatar-circle">Y</div>
                 <div class="profile-avatar-badge">
                   <i class="fa-solid fa-camera"></i>
                 </div>
               </div>
               <div class="profile-user-info">
-                <h2 id="profile-name" class="profile-user-title">Tausif Shaikh</h2>
-                <p id="profile-email" class="profile-user-email">tausifshaikh06@gmail.com</p>
+                <h2 id="profile-name" class="profile-user-title">Your Name</h2>
+                <p id="profile-email" class="profile-user-email">Add email address</p>
                 <span id="profile-phone" class="profile-user-phone">+91 98765 43210</span>
               </div>
             </div>
-            <button class="profile-edit-btn" onclick="Router.navigate('#checkout')">
+            <button class="profile-edit-btn" onclick="UI.openEditProfileModal()">
               <i class="fa-solid fa-pen-to-square"></i> Edit Profile
             </button>
           </div>
@@ -760,22 +760,22 @@
         <div class="profile-stats-bar">
           <div class="profile-stat-item" onclick="Router.navigate('#orders')">
             <i class="fa-solid fa-box-archive profile-stat-icon"></i>
-            <div id="profile-orders-count" class="profile-stat-num">12</div>
+            <div id="profile-orders-count" class="profile-stat-num">0</div>
             <div class="profile-stat-txt">Total Orders</div>
           </div>
           <div class="profile-stat-item" onclick="Router.navigate('#wishlist')">
             <i class="fa-regular fa-heart profile-stat-icon"></i>
-            <div id="profile-wishlist-count" class="profile-stat-num">8</div>
+            <div id="profile-wishlist-count" class="profile-stat-num">0</div>
             <div class="profile-stat-txt">Wishlist Items</div>
           </div>
-          <div class="profile-stat-item" onclick="Router.navigate('#checkout')">
+          <div class="profile-stat-item" onclick="UI.openEditProfileModal()">
             <i class="fa-solid fa-location-dot profile-stat-icon"></i>
-            <div class="profile-stat-num">3</div>
+            <div id="profile-address-count" class="profile-stat-num">0</div>
             <div class="profile-stat-txt">Saved Addresses</div>
           </div>
-          <div class="profile-stat-item">
+          <div class="profile-stat-item" onclick="UI.showToast('Earn 20 Reward Points on every order!')">
             <i class="fa-solid fa-star profile-stat-icon" style="color:var(--color-gold);"></i>
-            <div class="profile-stat-num">120</div>
+            <div id="profile-reward-points" class="profile-stat-num">0</div>
             <div class="profile-stat-txt">Reward Points</div>
           </div>
         </div>
@@ -811,7 +811,7 @@
           </div>
 
           <!-- Saved Addresses -->
-          <div class="profile-menu-row" onclick="Router.navigate('#checkout')">
+          <div class="profile-menu-row" onclick="UI.openEditProfileModal()">
             <div class="profile-menu-left">
               <div class="profile-menu-icon">
                 <i class="fa-solid fa-location-dot"></i>
@@ -880,15 +880,15 @@
             <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
           </div>
 
-          <!-- Logout / Reset -->
-          <div class="profile-menu-row" onclick="handleClearProfile()">
+          <!-- Account Details -->
+          <div class="profile-menu-row" onclick="UI.openEditProfileModal()">
             <div class="profile-menu-left">
-              <div class="profile-menu-icon" style="background:#FEE2E2; color:#DC2626;">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <div class="profile-menu-icon" style="background:var(--color-soft-green); color:var(--color-emerald);">
+                <i class="fa-solid fa-user-pen"></i>
               </div>
               <div class="profile-menu-texts">
-                <div class="profile-menu-title" style="color:#DC2626;">Logout</div>
-                <div class="profile-menu-sub">Sign out from your account / Reset device cache</div>
+                <div class="profile-menu-title">Account Details</div>
+                <div class="profile-menu-sub">Update your name, phone number & delivery address</div>
               </div>
             </div>
             <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
@@ -1036,57 +1036,57 @@
             <span class="discount-pill-badge" style="position:static; font-size:0.7rem;">Shikrapur & Shirur Taluka</span>
           </div>
 
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
-            <div>
-              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">Full Name *</label>
-              <input type="text" id="checkout-name" placeholder="e.g. Tausif Shaikh" required class="form-control">
+          <div class="checkout-grid-2">
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input type="text" id="checkout-name" placeholder="Your Name" required class="form-control">
             </div>
-            <div>
-              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">WhatsApp Number *</label>
-              <input type="tel" id="checkout-phone" placeholder="e.g. 9876543210" required class="form-control">
+            <div class="form-group">
+              <label class="form-label">WhatsApp Number *</label>
+              <input type="tel" id="checkout-phone" placeholder="e.g. 98765 43210" required class="form-control">
             </div>
           </div>
 
-          <div style="margin-bottom:12px;">
-            <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">House / Flat / Building *</label>
+          <div class="form-group">
+            <label class="form-label">House / Flat / Building *</label>
             <input type="text" id="checkout-house" placeholder="Flat No., Wing, Building Name" required class="form-control">
           </div>
 
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
-            <div>
-              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">Area / Street *</label>
-              <input type="text" id="checkout-area" placeholder="Naya Nagar / Main Road" required class="form-control">
+          <div class="checkout-grid-2">
+            <div class="form-group">
+              <label class="form-label">Area / Street *</label>
+              <input type="text" id="checkout-area" placeholder="Road Name, Area Colony" required class="form-control">
             </div>
-            <div>
-              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">Landmark (Optional)</label>
-              <input type="text" id="checkout-landmark" placeholder="Near Jama Masjid" class="form-control">
+            <div class="form-group">
+              <label class="form-label">Landmark (Optional)</label>
+              <input type="text" id="checkout-landmark" placeholder="Near Landmark (e.g. Near Jama Masjid)" class="form-control">
             </div>
           </div>
 
           <!-- COMPULSORY GOOGLE MAPS LOCATION -->
-          <div style="margin-bottom:14px; background:var(--color-soft-green); border:1px solid var(--color-soft-green-border); border-radius:var(--radius-md); padding:12px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-              <label style="font-size:0.78rem; font-weight:700; color:var(--color-emerald);">
+          <div style="margin-bottom:14px; background:var(--color-soft-green); border:1.5px solid var(--color-soft-green-border); border-radius:var(--radius-md); padding:14px; box-sizing:border-box;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+              <label class="form-label" style="color:var(--color-emerald); margin:0;">
                 📍 Google Maps Location (Compulsory) *
               </label>
-              <button type="button" class="btn btn-primary btn-sm" onclick="UI.detectCurrentLocation()" style="width:auto; padding:4px 10px; font-size:0.75rem; border-radius:var(--radius-full);">
+              <button type="button" class="btn btn-primary btn-sm" onclick="UI.detectCurrentLocation()" style="width:auto; padding:6px 14px; font-size:0.78rem; border-radius:var(--radius-full);">
                 <i class="fa-solid fa-location-crosshairs"></i> Detect My Location
               </button>
             </div>
             <input type="url" id="checkout-location-link" placeholder="https://maps.google.com/?q=... or click Detect" required class="form-control" style="background:#fff;">
-            <div style="font-size:0.72rem; color:var(--color-charcoal-muted); margin-top:4px;">
+            <div style="font-size:0.75rem; color:var(--color-charcoal-muted); margin-top:6px; line-height:1.4;">
               Enables our Shikrapur delivery rider to reach your doorstep directly without calling.
             </div>
           </div>
 
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-            <div>
-              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">Pincode</label>
-              <input type="text" value="412208 (Shikrapur)" readonly class="form-control" style="background:#F8F7F4; color:#64748B;">
+          <div class="checkout-grid-2">
+            <div class="form-group">
+              <label class="form-label">Pincode & Taluka</label>
+              <input type="text" value="412208 (Shikrapur & Shirur Taluka)" readonly class="form-control" style="background:#F8F7F4; color:#64748B;">
             </div>
-            <div>
-              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">Order Notes (Optional)</label>
-              <input type="text" id="checkout-notes" placeholder="Delivery notes..." class="form-control">
+            <div class="form-group">
+              <label class="form-label">Order Notes (Optional)</label>
+              <input type="text" id="checkout-notes" placeholder="Delivery instructions..." class="form-control">
             </div>
           </div>
         </div>
@@ -1192,6 +1192,74 @@
     </div>
   </div>
 
+  <!-- Edit Profile & Address Modal -->
+  <div id="edit-profile-modal" class="modal-backdrop">
+    <div class="modal-box" style="max-width:520px; padding: 22px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid var(--color-border); padding-bottom:12px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:40px; height:40px; border-radius:50%; background:var(--color-soft-green); color:var(--color-emerald); display:flex; align-items:center; justify-content:center; font-size:1.15rem;">
+            <i class="fa-solid fa-user-pen"></i>
+          </div>
+          <div>
+            <h3 style="font-size:1.15rem; font-weight:800; color:var(--color-charcoal); margin:0;">Edit Profile & Address</h3>
+            <p style="font-size:0.78rem; color:var(--color-charcoal-muted); margin:0;">Saved locally on your device for fast checkout</p>
+          </div>
+        </div>
+        <button onclick="UI.closeEditProfileModal()" aria-label="Close" style="background:none; border:none; font-size:1.25rem; color:#64748B; cursor:pointer; padding:4px;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="edit-profile-form" onsubmit="event.preventDefault(); UI.saveProfile();">
+        <div class="checkout-grid-2">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" id="edit-profile-name" class="form-control" placeholder="Your Name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">WhatsApp Number *</label>
+            <input type="tel" id="edit-profile-phone" class="form-control" placeholder="e.g. 98765 43210" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address (Optional)</label>
+          <input type="email" id="edit-profile-email" class="form-control" placeholder="e.g. name@example.com">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">House / Flat / Building *</label>
+          <input type="text" id="edit-profile-house" class="form-control" placeholder="Flat No., Wing, Building Name" required>
+        </div>
+
+        <div class="checkout-grid-2">
+          <div class="form-group">
+            <label class="form-label">Area / Street *</label>
+            <input type="text" id="edit-profile-area" class="form-control" placeholder="Road Name, Area Colony" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Landmark (Optional)</label>
+            <input type="text" id="edit-profile-landmark" class="form-control" placeholder="Near Landmark">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Delivery Pincode & Taluka</label>
+          <input type="text" class="form-control" value="412208 (Shikrapur & Shirur Taluka)" readonly style="background:#F8F7F4; color:#64748B;">
+        </div>
+
+        <div style="display:flex; gap:12px; margin-top:20px;">
+          <button type="button" class="btn btn-outline" style="flex:1; border-radius:var(--radius-full);" onclick="UI.closeEditProfileModal()">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" style="flex:1; border-radius:var(--radius-full);">
+            <i class="fa-solid fa-check"></i> Save Profile
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- 7. Floating Bottom Navigation Pill Bar (Exact Match to Reference Images) -->
   <nav class="mobile-bottom-nav">
     <a href="#home" class="bottom-nav-item active" data-route="home">
@@ -1260,13 +1328,13 @@
   </footer>
 
   <!-- Scripts with Cache Busters -->
-  <script src="assets/js/config.js?v=1.0.7"></script>
-  <script src="assets/js/products-data.js?v=1.0.7"></script>
-  <script src="assets/js/storage.js?v=1.0.7"></script>
-  <script src="assets/js/whatsapp.js?v=1.0.7"></script>
-  <script src="assets/js/cart.js?v=1.0.7"></script>
-  <script src="assets/js/ui.js?v=1.0.7"></script>
-  <script src="assets/js/router.js?v=1.0.7"></script>
-  <script src="assets/js/app.js?v=1.0.7"></script>
+  <script src="assets/js/config.js?v=1.0.9"></script>
+  <script src="assets/js/products-data.js?v=1.0.9"></script>
+  <script src="assets/js/storage.js?v=1.0.9"></script>
+  <script src="assets/js/whatsapp.js?v=1.0.9"></script>
+  <script src="assets/js/cart.js?v=1.0.9"></script>
+  <script src="assets/js/ui.js?v=1.0.9"></script>
+  <script src="assets/js/router.js?v=1.0.9"></script>
+  <script src="assets/js/app.js?v=1.0.9"></script>
 </body>
 </html>

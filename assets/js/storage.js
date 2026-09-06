@@ -139,22 +139,31 @@ const Storage = {
 
   // Customer Profile (No-login convenience persistence)
   getCustomer() {
-    return this.get(CONFIG.storageKeys.customer, {
-      name: "Tausif Shaikh",
-      email: "tausifshaikh06@gmail.com",
-      whatsapp: "9876543210",
-      house: "Flat No. 203, Al-Hidayah Apartments",
-      area: "Naya Nagar, Near Jama Masjid",
-      landmark: "Opp. City Hospital",
+    const defaultCustomer = {
+      name: "",
+      email: "",
+      whatsapp: "",
+      house: "",
+      area: "",
+      landmark: "",
       pincode: "412208",
       city: "Shikrapur",
+      locationLink: "",
       orderNotes: ""
-    });
+    };
+    const saved = this.get(CONFIG.storageKeys.customer, null);
+    if (!saved || saved.name === "Tausif Shaikh" || saved.email === "tausifshaikh06@gmail.com") {
+      return defaultCustomer;
+    }
+    return { ...defaultCustomer, ...saved };
   },
 
   saveCustomer(customerData) {
-    this.set(CONFIG.storageKeys.customer, customerData);
-    this.dispatchStateChangeEvent("customer", customerData);
+    const current = this.getCustomer();
+    const updated = { ...current, ...customerData };
+    this.set(CONFIG.storageKeys.customer, updated);
+    this.dispatchStateChangeEvent("customer", updated);
+    return updated;
   },
 
   clearCustomer() {
@@ -164,13 +173,15 @@ const Storage = {
 
   // Orders Management
   getOrders() {
-    const orders = this.get(CONFIG.storageKeys.orders, null);
-    if (!orders || orders.length === 0 || (orders[0] && orders[0].id && orders[0].id.startsWith("DK-2025"))) {
-      // Seed with fresh sample orders matching reference
-      this.set(CONFIG.storageKeys.orders, INITIAL_SAMPLE_ORDERS);
-      return INITIAL_SAMPLE_ORDERS;
+    const orders = this.get(CONFIG.storageKeys.orders, []);
+    // Filter out old demo dummy orders if any exist in localStorage
+    const realOrders = Array.isArray(orders) 
+      ? orders.filter(o => o && o.id && !o.id.startsWith("DK-2025") && !o.id.startsWith("DK1023"))
+      : [];
+    if (orders && realOrders.length !== orders.length) {
+      this.set(CONFIG.storageKeys.orders, realOrders);
     }
-    return orders;
+    return realOrders;
   },
 
   saveOrder(newOrder) {

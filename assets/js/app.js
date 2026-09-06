@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   UI.renderOffersPage("all");
   UI.initOffersCountdown();
   UI.updateHeaderBadges();
+  UI.renderProfilePage();
 
   // 2. Setup PWA & Service Worker
   initPwaServiceWorker();
@@ -31,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const activeRouteKey = path.replace("#", "") || "home";
     document.querySelectorAll(".bottom-nav-item").forEach(item => {
       const target = item.getAttribute("data-route");
-      item.classList.toggle("active", target === activeRouteKey);
+      item.classList.toggle("active", target === activeRouteKey || (activeRouteKey === "profile-edit" && target === "profile"));
     });
 
     document.querySelectorAll(".desktop-nav-link").forEach(link => {
@@ -56,6 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (path === "#profile") {
       document.getElementById("view-profile")?.classList.add("active");
       UI.renderProfilePage();
+    } else if (path === "#profile-edit") {
+      document.getElementById("view-profile")?.classList.add("active");
+      UI.renderProfilePage();
+      UI.openEditProfileModal();
     } else if (path === "#wishlist") {
       document.getElementById("view-wishlist")?.classList.add("active");
       renderWishlistView();

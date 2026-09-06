@@ -774,12 +774,12 @@ const UI = {
 
       <div style="background:#F8FAFC; border:1px solid #EEF2F6; border-radius:14px; padding:14px; margin-bottom:16px;">
         <div style="font-size:0.75rem; color:#94A3B8; text-transform:uppercase; font-weight:700; margin-bottom:6px;">Delivery Address</div>
-        <div style="font-size:0.86rem; font-weight:700; color:var(--color-charcoal);">${order.deliveryAddress?.name || 'Tausif Shaikh'}</div>
+        <div style="font-size:0.86rem; font-weight:700; color:var(--color-charcoal);">${order.deliveryAddress?.name || 'Customer'}</div>
         <div style="font-size:0.8rem; color:#64748B; margin-top:2px;">
-          ${order.deliveryAddress?.house || 'Flat 203'}, ${order.deliveryAddress?.area || 'Naya Nagar'}, ${order.deliveryAddress?.city || 'Shikrapur'} - 412208
+          ${order.deliveryAddress?.house || 'Flat No.'}, ${order.deliveryAddress?.area || 'Area / Street'}, ${order.deliveryAddress?.city || 'Shikrapur'} - 412208
         </div>
         <div style="font-size:0.78rem; color:var(--color-emerald); font-weight:600; margin-top:4px;">
-          <i class="fa-solid fa-phone"></i> ${order.deliveryAddress?.phone || '+91 98765 43210'}
+          <i class="fa-solid fa-phone"></i> ${order.deliveryAddress?.phone || '+91 98765 00000'}
         </div>
       </div>
 
@@ -851,18 +851,83 @@ const UI = {
     const emailEl = document.getElementById("profile-email");
     const ordersCountEl = document.getElementById("profile-orders-count");
     const wishCountEl = document.getElementById("profile-wishlist-count");
+    const addressCountEl = document.getElementById("profile-address-count");
+    const rewardPointsEl = document.getElementById("profile-reward-points");
 
-    const name = customer.name || "Tausif Shaikh";
+    const name = customer.name ? customer.name.trim() : "Your Name";
     if (nameEl) nameEl.textContent = name;
     if (phoneEl) phoneEl.textContent = customer.whatsapp ? `+91 ${customer.whatsapp}` : "+91 98765 43210";
-    if (emailEl) emailEl.textContent = customer.email || "tausifshaikh06@gmail.com";
-    if (ordersCountEl) ordersCountEl.textContent = orders.length || 12;
-    if (wishCountEl) wishCountEl.textContent = wishlist.length || 8;
+    if (emailEl) emailEl.textContent = customer.email ? customer.email : "Add email address";
+    if (ordersCountEl) ordersCountEl.textContent = orders.length;
+    if (wishCountEl) wishCountEl.textContent = wishlist.length;
+    if (addressCountEl) addressCountEl.textContent = (customer.house || customer.area) ? 1 : 0;
+    if (rewardPointsEl) rewardPointsEl.textContent = orders.length * 20;
 
-    const initial = name.charAt(0).toUpperCase() || "T";
+    const initial = (name && name !== "Your Name") ? name.charAt(0).toUpperCase() : "Y";
     document.querySelectorAll(".profile-avatar-circle").forEach(el => {
       el.textContent = initial;
     });
+
+    const sidebarName = document.getElementById("sidebar-user-name");
+    if (sidebarName) sidebarName.textContent = name;
+    const sidebarInitial = document.getElementById("sidebar-user-initial");
+    if (sidebarInitial) sidebarInitial.textContent = initial;
+  },
+
+  openEditProfileModal() {
+    const customer = Storage.getCustomer();
+    const nameInput = document.getElementById("edit-profile-name");
+    const phoneInput = document.getElementById("edit-profile-phone");
+    const emailInput = document.getElementById("edit-profile-email");
+    const houseInput = document.getElementById("edit-profile-house");
+    const areaInput = document.getElementById("edit-profile-area");
+    const landmarkInput = document.getElementById("edit-profile-landmark");
+
+    if (nameInput) nameInput.value = customer.name || "";
+    if (phoneInput) phoneInput.value = customer.whatsapp || "";
+    if (emailInput) emailInput.value = customer.email || "";
+    if (houseInput) houseInput.value = customer.house || "";
+    if (areaInput) areaInput.value = customer.area || "";
+    if (landmarkInput) landmarkInput.value = customer.landmark || "";
+
+    const modal = document.getElementById("edit-profile-modal");
+    if (modal) modal.classList.add("open");
+  },
+
+  closeEditProfileModal() {
+    const modal = document.getElementById("edit-profile-modal");
+    if (modal) modal.classList.remove("open");
+  },
+
+  saveProfile() {
+    const name = document.getElementById("edit-profile-name")?.value.trim() || "";
+    const phone = document.getElementById("edit-profile-phone")?.value.trim() || "";
+    const email = document.getElementById("edit-profile-email")?.value.trim() || "";
+    const house = document.getElementById("edit-profile-house")?.value.trim() || "";
+    const area = document.getElementById("edit-profile-area")?.value.trim() || "";
+    const landmark = document.getElementById("edit-profile-landmark")?.value.trim() || "";
+
+    if (!name || !phone) {
+      alert("Please enter both your Full Name and WhatsApp phone number!");
+      return;
+    }
+
+    const updatedCustomer = {
+      name,
+      whatsapp: phone,
+      email,
+      house,
+      area,
+      landmark,
+      pincode: "412208",
+      city: "Shikrapur"
+    };
+
+    Storage.saveCustomer(updatedCustomer);
+    this.renderProfilePage();
+    this.renderCheckout();
+    this.closeEditProfileModal();
+    this.showToast("Profile & Address updated successfully! ✨");
   },
 
   // Simplified Checkout: ONLY Address & Order Summary (NO UPI CARD!)
@@ -877,12 +942,12 @@ const UI = {
     const landmarkInput = document.getElementById("checkout-landmark");
     const locationInput = document.getElementById("checkout-location-link");
 
-    if (nameInput && customer.name) nameInput.value = customer.name;
-    if (phoneInput && customer.whatsapp) phoneInput.value = customer.whatsapp;
-    if (houseInput && customer.house) houseInput.value = customer.house;
-    if (areaInput && customer.area) areaInput.value = customer.area;
-    if (landmarkInput && customer.landmark) landmarkInput.value = customer.landmark;
-    if (locationInput && customer.locationLink) locationInput.value = customer.locationLink;
+    if (nameInput) nameInput.value = customer.name || "";
+    if (phoneInput) phoneInput.value = customer.whatsapp || "";
+    if (houseInput) houseInput.value = customer.house || "";
+    if (areaInput) areaInput.value = customer.area || "";
+    if (landmarkInput) landmarkInput.value = customer.landmark || "";
+    if (locationInput) locationInput.value = customer.locationLink || "";
 
     const subtotalEl = document.getElementById("checkout-subtotal");
     const discountEl = document.getElementById("checkout-discount");
