@@ -585,26 +585,168 @@ const UI = {
     });
   },
 
-  detectCurrentLocation() {
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser. Please paste your Google Maps link manually.");
+  // ==========================================
+  // CUSTOM BRANDED POPUPS & LOCATION PICKER
+  // ==========================================
+  showCustomModal({ title = "Notice", message = "", icon = "fa-solid fa-circle-check", iconColor = "var(--color-emerald)", confirmText = "OK", onConfirm = null }) {
+    const modal = document.getElementById("custom-alert-modal");
+    const titleEl = document.getElementById("custom-alert-title");
+    const msgEl = document.getElementById("custom-alert-msg");
+    const iconEl = document.getElementById("custom-alert-icon");
+    const actionsEl = document.getElementById("custom-alert-actions");
+
+    if (!modal) {
+      alert(message || title);
       return;
     }
-    this.showToast("Detecting your location via GPS... 📍");
+
+    if (titleEl) titleEl.textContent = title;
+    if (msgEl) msgEl.textContent = message;
+    if (iconEl) {
+      iconEl.innerHTML = `<i class="${icon}" style="color:${iconColor}; font-size:2.4rem;"></i>`;
+    }
+    if (actionsEl) {
+      actionsEl.innerHTML = `
+        <button type="button" class="btn btn-primary" style="flex:1; border-radius:var(--radius-full); padding:11px;" onclick="UI.closeCustomModal(); ${onConfirm ? 'UI._onCustomConfirm()' : ''}">
+          ${confirmText}
+        </button>
+      `;
+    }
+    this._customConfirmHandler = onConfirm;
+    modal.classList.add("open");
+  },
+
+  _onCustomConfirm() {
+    if (typeof this._customConfirmHandler === 'function') {
+      this._customConfirmHandler();
+    }
+    this._customConfirmHandler = null;
+  },
+
+  closeCustomModal() {
+    const modal = document.getElementById("custom-alert-modal");
+    if (modal) modal.classList.remove("open");
+  },
+
+  detectCurrentLocation() {
+    this.openLocationModal();
+  },
+
+  openLocationModal() {
+    const modal = document.getElementById("location-picker-modal");
+    if (modal) {
+      const badge = document.getElementById("gps-status-badge");
+      if (badge) {
+        badge.textContent = "Detect";
+        badge.style.background = "#E0F2FE";
+        badge.style.color = "#0369A1";
+      }
+      modal.classList.add("open");
+    }
+  },
+
+  closeLocationModal() {
+    const modal = document.getElementById("location-picker-modal");
+    if (modal) modal.classList.remove("open");
+  },
+
+  triggerGpsDetection() {
+    const badge = document.getElementById("gps-status-badge");
+    if (badge) {
+      badge.textContent = "Locating...";
+      badge.style.background = "#FEF3C7";
+      badge.style.color = "#B45309";
+    }
+
+    if (!navigator.geolocation) {
+      this.showCustomModal({
+        title: "GPS Not Supported",
+        message: "Your browser doesn't support automatic geolocation. Please choose your village from the quick buttons below.",
+        icon: "fa-solid fa-triangle-exclamation",
+        iconColor: "#F59E0B"
+      });
+      return;
+    }
+
+    const onLocationSuccess = (pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
+      const input = document.getElementById("checkout-location-link");
+      if (input) input.value = mapsUrl;
+
+      Storage.saveCustomer({ locationLink: mapsUrl });
+
+      if (badge) {
+        badge.textContent = "Locked ✓";
+        badge.style.background = "#DCFCE7";
+        badge.style.color = "#15803D";
+      }
+
+      this.showToast("📍 Location locked successfully!");
+      setTimeout(() => this.closeLocationModal(), 600);
+    };
+
+    const onLocationFail = (err) => {
+      console.warn("High accuracy geolocation failed, trying standard accuracy:", err);
+      navigator.geolocation.getCurrentPosition(
+        onLocationSuccess,
+        () => {
+          if (badge) {
+            badge.textContent = "Retry / Pick Village";
+            badge.style.background = "#FEE2E2";
+            badge.style.color = "#DC2626";
+          }
+          this.showCustomModal({
+            title: "GPS Permission Notice",
+            message: "Unable to retrieve device GPS. Please enable Location in phone settings, or simply tap your village name below.",
+            icon: "fa-solid fa-location-crosshairs",
+            iconColor: "#F59E0B"
+          });
+        },
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: 120000 }
+      );
+    };
+
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
-        const mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
-        const input = document.getElementById("checkout-location-link");
-        if (input) input.value = mapsUrl;
-        this.showToast("Location detected! 📍");
-      },
-      (err) => {
-        alert("Unable to detect location automatically. Please enable Location permissions or paste your Google Maps link manually.");
-      },
-      { timeout: 10000, enableHighAccuracy: true }
+      onLocationSuccess,
+      onLocationFail,
+      { enableHighAccuracy: true, timeout: 7000, maximumAge: 60000 }
     );
+  },
+
+  selectQuickVillage(village, pincode) {
+    const villageInput = document.getElementById("checkout-village");
+    const pincodeInput = document.getElementById("checkout-pincode");
+    const locationInput = document.getElementById("checkout-location-link");
+
+    if (villageInput) villageInput.value = village;
+    if (pincodeInput && pincode) pincodeInput.value = pincode;
+
+    const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(village + ', Shirur, Maharashtra')}`;
+    if (locationInput) locationInput.value = mapsUrl;
+
+    Storage.saveCustomer({
+      village: village,
+      pincode: pincode || "412208",
+      locationLink: mapsUrl
+    });
+
+    this.closeLocationModal();
+    this.showToast(`📍 Location set to ${village}!`);
+  },
+
+  applyManualLocation() {
+    const manualVal = document.getElementById("manual-modal-loc-input")?.value.trim();
+    if (!manualVal) {
+      this.showToast("Please paste a valid Google Maps link!");
+      return;
+    }
+    const locationInput = document.getElementById("checkout-location-link");
+    if (locationInput) locationInput.value = manualVal;
+    Storage.saveCustomer({ locationLink: manualVal });
+    this.closeLocationModal();
+    this.showToast("Location saved! 📍");
   },
 
   filterOrdersTab(btnElement, filterStatus) {
@@ -964,7 +1106,12 @@ const UI = {
     const pincode = document.getElementById("edit-profile-pincode")?.value.trim() || "412208";
 
     if (!name || !phone) {
-      alert("Please enter both your Full Name and WhatsApp phone number!");
+      this.showCustomModal({
+        title: "Missing Information",
+        message: "Please enter your Full Name and WhatsApp phone number!",
+        icon: "fa-solid fa-triangle-exclamation",
+        iconColor: "#F59E0B"
+      });
       return;
     }
 
@@ -985,6 +1132,32 @@ const UI = {
     this.renderCheckout();
     this.closeEditProfileModal();
     this.showToast("Profile & Address updated successfully! ✨");
+  },
+
+  _checkoutInputsBound: false,
+  bindCheckoutInputSync() {
+    if (this._checkoutInputsBound) return;
+    this._checkoutInputsBound = true;
+    const fields = [
+      { id: "checkout-name", key: "name" },
+      { id: "checkout-phone", key: "whatsapp" },
+      { id: "checkout-house", key: "house" },
+      { id: "checkout-area", key: "area" },
+      { id: "checkout-village", key: "village" },
+      { id: "checkout-landmark", key: "landmark" },
+      { id: "checkout-pincode", key: "pincode" },
+      { id: "checkout-location-link", key: "locationLink" },
+      { id: "checkout-notes", key: "orderNotes" }
+    ];
+    fields.forEach(({ id, key }) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", () => {
+          const val = el.value.trim();
+          Storage.saveCustomer({ [key]: val });
+        });
+      }
+    });
   },
 
   // Simplified Checkout: ONLY Address & Order Summary (NO UPI CARD!)
@@ -1009,6 +1182,8 @@ const UI = {
     if (landmarkInput) landmarkInput.value = customer.landmark || "";
     if (pincodeInput) pincodeInput.value = customer.pincode || "412208";
     if (locationInput) locationInput.value = customer.locationLink || "";
+
+    this.bindCheckoutInputSync();
 
     const subtotalEl = document.getElementById("checkout-subtotal");
     const discountEl = document.getElementById("checkout-discount");
@@ -1069,8 +1244,14 @@ const UI = {
   executeWhatsAppOrder() {
     const summary = CartService.getSummary();
     if (summary.items.length === 0) {
-      alert("Your cart is empty! Please add products first.");
-      Router.navigate("#home");
+      this.showCustomModal({
+        title: "Your Cart is Empty",
+        message: "Please add products to your cart before proceeding to checkout.",
+        icon: "fa-solid fa-bag-shopping",
+        iconColor: "var(--color-emerald)",
+        confirmText: "Explore Products",
+        onConfirm: () => Router.navigate("#home")
+      });
       return;
     }
 
@@ -1085,14 +1266,18 @@ const UI = {
     const locationLink = document.getElementById("checkout-location-link")?.value.trim() || "";
 
     if (!name || !phone || !house || !area || !village) {
-      alert("Please fill in your Name, WhatsApp Phone Number, Village/Town, and Address details!");
+      this.showCustomModal({
+        title: "Incomplete Address",
+        message: "Please fill in your Name, WhatsApp Number, House/Flat, Area, and Village/Town so our rider can deliver smoothly.",
+        icon: "fa-solid fa-triangle-exclamation",
+        iconColor: "#F59E0B"
+      });
       return;
     }
 
     if (!locationLink) {
-      alert("Please provide your Google Maps location link or click '📍 Detect My Location' (Required for accurate doorstep delivery)!");
-      const locEl = document.getElementById("checkout-location-link");
-      if (locEl) locEl.focus();
+      this.showToast("📍 Please select your Village or detect GPS location!");
+      this.openLocationModal();
       return;
     }
 

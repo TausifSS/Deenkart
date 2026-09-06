@@ -615,16 +615,28 @@ function renderNotificationsView() {
  * Delivery Information Modal Alert
  */
 function showDeliveryInfo() {
-  alert("📍 DeenKart Shikrapur Delivery Information:\n\n• Delivery Area: Exclusively within Shikrapur, Maharashtra (PIN: 412208)\n• Delivery Charges: ₹20 standard fee\n• Free Delivery: Automatic FREE delivery on orders above ₹499\n• Timing: Same-day delivery for orders placed before 3 PM\n• Live Location: Please share your GPS / Google Maps pin for direct doorstep arrival.");
+  UI.showCustomModal({
+    title: "Delivery Information 🚚",
+    message: "Fast delivery from Koregaon to Shirur, Maharashtra (PIN: 412208).\nStandard delivery fee: ₹20 (FREE on orders above ₹499).\nSame-day dispatch for orders placed before 3 PM.",
+    icon: "fa-solid fa-truck-fast",
+    iconColor: "var(--color-emerald)"
+  });
 }
 
 /**
  * Clear All Local Data
  */
 function handleClearProfile() {
-  if (confirm("Are you sure you want to clear all your saved cart, address, and orders on this device?")) {
-    localStorage.clear();
-    UI.showToast("All stored data cleared.");
-    setTimeout(() => window.location.reload(), 300);
-  }
+  UI.showCustomModal({
+    title: "Clear Saved Data?",
+    message: "Are you sure you want to clear your cart, address, and orders on this device?",
+    icon: "fa-solid fa-triangle-exclamation",
+    iconColor: "#DC2626",
+    confirmText: "Clear All",
+    onConfirm: () => {
+      localStorage.clear();
+      UI.showToast("All stored data cleared.");
+      setTimeout(() => window.location.reload(), 300);
+    }
+  });
 }

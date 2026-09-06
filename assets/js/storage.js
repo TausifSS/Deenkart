@@ -153,7 +153,7 @@ const Storage = {
       orderNotes: ""
     };
     const saved = this.get(CONFIG.storageKeys.customer, null);
-    if (!saved || saved.name === "Tausif Shaikh" || saved.email === "tausifshaikh06@gmail.com") {
+    if (!saved) {
       return defaultCustomer;
     }
     return { ...defaultCustomer, ...saved };

@@ -27,10 +27,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheets with Cache Busters -->
-  <link rel="stylesheet" href="assets/css/app.bundle.css?v=1.1.2">
-  <link rel="stylesheet" href="assets/css/variables.css?v=1.1.2">
-  <link rel="stylesheet" href="assets/css/style.css?v=1.1.2">
-  <link rel="stylesheet" href="assets/css/components.css?v=1.1.2">
+  <link rel="stylesheet" href="assets/css/app.bundle.css?v=1.1.4">
+  <link rel="stylesheet" href="assets/css/variables.css?v=1.1.4">
+  <link rel="stylesheet" href="assets/css/style.css?v=1.1.4">
+  <link rel="stylesheet" href="assets/css/components.css?v=1.1.4">
 
   <!-- Inline critical search and category dropdown styling to avoid cache lag -->
   <style>
@@ -138,7 +138,7 @@
           <i class="fa-solid fa-bag-shopping"></i>
           <span class="badge-dot cart-badge-count" style="display:none;">0</span>
         </button>
-        <button class="header-btn" onclick="Router.navigate('#profile')" aria-label="Account">
+        <button class="header-btn header-user-btn" onclick="Router.navigate('#profile')" aria-label="Account">
           <i class="fa-regular fa-user"></i>
         </button>
       </div>
@@ -1255,7 +1255,97 @@
     </div>
   </div>
 
-  <!-- 7. Floating Bottom Navigation Pill Bar (Exact Match to Reference Images) -->
+  <!-- Custom Branded Popup Dialog (Replaces native browser alert) -->
+  <div id="custom-alert-modal" class="modal-backdrop">
+    <div class="modal-box custom-alert-box" style="max-width:380px; text-align:center; padding:24px 20px; border-radius:20px;">
+      <div id="custom-alert-icon" style="margin-bottom:12px;">
+        <i class="fa-solid fa-circle-check text-emerald" style="font-size:2.4rem;"></i>
+      </div>
+      <h3 id="custom-alert-title" style="font-size:1.2rem; font-weight:800; color:var(--color-charcoal); margin:0 0 8px;">Notice</h3>
+      <p id="custom-alert-msg" style="font-size:0.88rem; color:var(--color-charcoal-muted); line-height:1.5; margin:0 0 20px;">Message</p>
+      <div id="custom-alert-actions" style="display:flex; gap:10px;">
+        <button type="button" class="btn btn-primary" style="flex:1; border-radius:var(--radius-full); padding:11px;" onclick="UI.closeCustomModal()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Custom Location Picker Modal (GPS & Quick Village Selector) -->
+  <div id="location-picker-modal" class="modal-backdrop">
+    <div class="modal-box location-modal-box" style="max-width:440px; padding:20px; border-radius:22px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid var(--color-border); padding-bottom:10px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:38px; height:38px; border-radius:50%; background:var(--color-soft-green); color:var(--color-emerald); display:flex; align-items:center; justify-content:center; font-size:1.15rem;">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <div>
+            <h3 style="font-size:1.1rem; font-weight:800; color:var(--color-charcoal); margin:0;">Set Delivery Location</h3>
+            <p style="font-size:0.75rem; color:var(--color-charcoal-muted); margin:0;">Direct doorstep delivery in Shirur Taluka</p>
+          </div>
+        </div>
+        <button onclick="UI.closeLocationModal()" aria-label="Close" style="background:none; border:none; font-size:1.25rem; color:#64748B; cursor:pointer; padding:4px;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Option 1: Live GPS Button -->
+      <div onclick="UI.triggerGpsDetection()" style="background:#FAF8F5; border:1.5px solid #E2E8F0; border-radius:14px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; margin-bottom:14px; transition:border 0.2s;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:38px; height:38px; border-radius:50%; background:#DCFCE7; color:#15803D; display:flex; align-items:center; justify-content:center; font-size:1.1rem;">
+            <i class="fa-solid fa-location-crosshairs"></i>
+          </div>
+          <div>
+            <div style="font-size:0.9rem; font-weight:800; color:var(--color-charcoal);">Detect My Live GPS</div>
+            <div style="font-size:0.75rem; color:var(--color-charcoal-muted);">Instant satellite coordinate lock</div>
+          </div>
+        </div>
+        <span id="gps-status-badge" style="font-size:0.72rem; font-weight:800; background:#E0F2FE; color:#0369A1; padding:4px 10px; border-radius:20px;">Detect</span>
+      </div>
+
+      <!-- Option 2: Quick Village Selection -->
+      <div style="margin-bottom:14px;">
+        <div style="font-size:0.8rem; font-weight:800; color:var(--color-charcoal); margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+          <i class="fa-solid fa-map-pin text-gold"></i> Or Tap Your Village / Town:
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px;">
+          <button type="button" class="btn btn-outline" style="padding:8px 10px; font-size:0.78rem; font-weight:700; border-radius:10px; text-align:left; justify-content:flex-start;" onclick="UI.selectQuickVillage('Shikrapur', '412208')">
+            📍 Shikrapur
+          </button>
+          <button type="button" class="btn btn-outline" style="padding:8px 10px; font-size:0.78rem; font-weight:700; border-radius:10px; text-align:left; justify-content:flex-start;" onclick="UI.selectQuickVillage('Koregaon Bhima', '412216')">
+            📍 Koregaon Bhima
+          </button>
+          <button type="button" class="btn btn-outline" style="padding:8px 10px; font-size:0.78rem; font-weight:700; border-radius:10px; text-align:left; justify-content:flex-start;" onclick="UI.selectQuickVillage('Shirur City', '412210')">
+            📍 Shirur City
+          </button>
+          <button type="button" class="btn btn-outline" style="padding:8px 10px; font-size:0.78rem; font-weight:700; border-radius:10px; text-align:left; justify-content:flex-start;" onclick="UI.selectQuickVillage('Sanaswadi', '412208')">
+            📍 Sanaswadi
+          </button>
+          <button type="button" class="btn btn-outline" style="padding:8px 10px; font-size:0.78rem; font-weight:700; border-radius:10px; text-align:left; justify-content:flex-start;" onclick="UI.selectQuickVillage('Talegaon Dhamdhere', '412208')">
+            📍 Talegaon Dhamdhere
+          </button>
+          <button type="button" class="btn btn-outline" style="padding:8px 10px; font-size:0.78rem; font-weight:700; border-radius:10px; text-align:left; justify-content:flex-start;" onclick="UI.selectQuickVillage('Ranjangaon MIDC', '412209')">
+            📍 Ranjangaon
+          </button>
+          <button type="button" class="btn btn-outline" style="padding:8px 10px; font-size:0.78rem; font-weight:700; border-radius:10px; text-align:left; justify-content:flex-start;" onclick="UI.selectQuickVillage('Pabal', '412403')">
+            📍 Pabal
+          </button>
+          <button type="button" class="btn btn-outline" style="padding:8px 10px; font-size:0.78rem; font-weight:700; border-radius:10px; text-align:left; justify-content:flex-start;" onclick="UI.selectQuickVillage('Kendur', '412403')">
+            📍 Kendur
+          </button>
+        </div>
+      </div>
+
+      <!-- Option 3: Manual Paste -->
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:10px 12px;">
+        <label class="form-label" style="font-size:0.76rem; margin-bottom:4px;">Or Paste Google Maps Link Manually:</label>
+        <div style="display:flex; gap:8px;">
+          <input type="url" id="manual-modal-loc-input" placeholder="https://maps.google.com/?q=..." class="form-control" style="font-size:0.8rem; padding:6px 10px;">
+          <button type="button" class="btn btn-primary" onclick="UI.applyManualLocation()" style="width:auto; padding:6px 14px; font-size:0.78rem; border-radius:var(--radius-sm);">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Mobile Bottom Navigation Bar (Docked Native App Style) -->
   <nav class="mobile-bottom-nav">
     <a href="#home" class="bottom-nav-item active" data-route="home">
       <i class="fa-solid fa-house"></i>
@@ -1323,13 +1413,13 @@
   </footer>
 
   <!-- Scripts with Cache Busters -->
-  <script src="assets/js/config.js?v=1.1.2"></script>
-  <script src="assets/js/products-data.js?v=1.1.2"></script>
-  <script src="assets/js/storage.js?v=1.1.2"></script>
-  <script src="assets/js/whatsapp.js?v=1.1.2"></script>
-  <script src="assets/js/cart.js?v=1.1.2"></script>
-  <script src="assets/js/ui.js?v=1.1.2"></script>
-  <script src="assets/js/router.js?v=1.1.2"></script>
-  <script src="assets/js/app.js?v=1.1.2"></script>
+  <script src="assets/js/config.js?v=1.1.4"></script>
+  <script src="assets/js/products-data.js?v=1.1.4"></script>
+  <script src="assets/js/storage.js?v=1.1.4"></script>
+  <script src="assets/js/whatsapp.js?v=1.1.4"></script>
+  <script src="assets/js/cart.js?v=1.1.4"></script>
+  <script src="assets/js/ui.js?v=1.1.4"></script>
+  <script src="assets/js/router.js?v=1.1.4"></script>
+  <script src="assets/js/app.js?v=1.1.4"></script>
 </body>
 </html>
