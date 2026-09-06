@@ -408,6 +408,21 @@ const UI = {
     `;
   },
 
+  modalSelectedQty: 1,
+
+  changeModalQty(delta) {
+    this.modalSelectedQty = Math.max(1, (this.modalSelectedQty || 1) + delta);
+    const qtyVal = document.getElementById("modal-qty-val");
+    if (qtyVal) qtyVal.textContent = this.modalSelectedQty;
+  },
+
+  switchModalImage(src, clickedElem) {
+    const mainImg = document.getElementById("modal-main-img");
+    if (mainImg) mainImg.src = src;
+    document.querySelectorAll(".product-modal-thumb").forEach(t => t.classList.remove("active"));
+    if (clickedElem) clickedElem.classList.add("active");
+  },
+
   // Open Product Details Modal
   openProductModal(productId) {
     const products = Storage.get(CONFIG.storageKeys.products, PRODUCTS_DATA);
@@ -418,62 +433,97 @@ const UI = {
     const content = document.getElementById("product-modal-body");
     if (!modal || !content) return;
 
+    this.modalSelectedQty = 1;
     const isWish = Storage.isWishlisted(product.id);
     const images = product.images && product.images.length ? product.images : [product.image];
+    const discount = product.discount || (product.originalPrice ? Math.round(((product.originalPrice - product.price)/product.originalPrice)*100) : 20);
 
     content.innerHTML = `
-      <div style="padding: 20px;">
-        <div style="position:relative; aspect-ratio: 1/1; background: var(--color-gray-bg); border-radius: var(--radius-xl); overflow:hidden; margin-bottom: 16px;">
-          <span class="discount-pill-badge" style="top:12px; left:12px;">
-            -${product.discount || 20}%
-          </span>
-          <span style="position:absolute; bottom:12px; right:12px; background:rgba(0,0,0,0.6); color:#fff; font-size:0.75rem; padding:3px 8px; border-radius:12px; z-index:2;">
-            1/${images.length}
-          </span>
-          <img id="modal-main-img" src="${images[0]}" alt="${product.name}" style="width:100%; height:100%; object-fit:cover;">
-        </div>
-
-        <div style="display:flex; gap:8px; margin-bottom:16px; overflow-x:auto;">
-          ${images.map((img, idx) => `
-            <img src="${img}" alt="thumbnail" onclick="document.getElementById('modal-main-img').src='${img}'" 
-                 style="width:54px; height:54px; object-fit:cover; border-radius:var(--radius-sm); border:2px solid ${idx===0 ? 'var(--color-emerald)' : 'var(--color-border)'}; cursor:pointer;">
-          `).join('')}
-        </div>
-
-        <div style="font-size:0.75rem; font-weight:800; color:var(--color-emerald); text-transform:uppercase; margin-bottom:2px;">
-          ${product.categoryName || 'ISLAMIC ESSENTIALS'}
-        </div>
-        <h2 style="font-size:1.3rem; font-weight:800; color:var(--color-charcoal); margin-bottom:4px;">${product.name}</h2>
-        <p style="font-size:0.86rem; color:var(--color-charcoal-muted); margin-bottom:12px;">${product.subtitle || ''}</p>
-
-        <div style="display:flex; align-items:baseline; gap:10px; margin-bottom:16px;">
-          <span style="font-size:1.5rem; font-weight:800; color:var(--color-charcoal);">₹${product.price}</span>
-          ${product.originalPrice ? `<span style="font-size:1rem; color:#94A3B8; text-decoration:line-through;">₹${product.originalPrice}</span>` : ''}
-          ${product.discount ? `<span class="discount-text" style="font-size:0.9rem;">${product.discount}% OFF</span>` : ''}
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; margin-bottom:18px;">
-          <div style="background:var(--color-soft-green); padding:8px 12px; border-radius:var(--radius-sm); font-size:0.78rem; font-weight:700; color:var(--color-emerald); display:flex; align-items:center; gap:6px;">
-            <i class="fa-solid fa-circle-check"></i> In Stock (Shikrapur)
+      <div class="product-modal-grid">
+        <!-- Left Column: Media Gallery -->
+        <div class="product-modal-gallery">
+          <div class="product-modal-main-img-wrap">
+            <span class="discount-pill-badge product-modal-badge">
+              -${discount}% OFF
+            </span>
+            <button class="product-modal-fav-btn ${isWish ? 'active' : ''}" onclick="UI.handleWishlistToggle('${product.id}'); this.classList.toggle('active'); this.innerHTML = '<i class=\\'fa-' + (this.classList.contains('active') ? 'solid' : 'regular') + ' fa-heart\\'></i>';" aria-label="Add to Wishlist">
+              <i class="fa-${isWish ? 'solid' : 'regular'} fa-heart"></i>
+            </button>
+            <img id="modal-main-img" src="${images[0]}" alt="${product.name}" class="product-modal-main-img">
+            <span class="product-modal-img-count">
+              <i class="fa-regular fa-image"></i> ${images.length} Photos
+            </span>
           </div>
-          <div style="background:#FAF4E8; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.78rem; font-weight:700; color:var(--color-charcoal); display:flex; align-items:center; gap:6px;">
-            <i class="fa-solid fa-truck-fast text-gold"></i> Delivery ₹20 (FREE > ₹499)
+
+          ${images.length > 1 ? `
+            <div class="product-modal-thumbs">
+              ${images.map((img, idx) => `
+                <div class="product-modal-thumb ${idx === 0 ? 'active' : ''}" onclick="UI.switchModalImage('${img}', this)">
+                  <img src="${img}" alt="thumbnail ${idx+1}">
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+
+          <div class="product-modal-trust-strip">
+            <div class="trust-pill"><i class="fa-solid fa-bolt text-gold"></i> Fast delivery from Koregaon to Shirur</div>
+            <div class="trust-pill"><i class="fa-solid fa-shield-halved text-emerald"></i> 100% Authentic & Halal Certified</div>
           </div>
         </div>
 
-        <div style="border-top:1px solid var(--color-border); padding-top:14px; margin-bottom:18px;">
-          <h4 style="font-size:0.92rem; font-weight:700; margin-bottom:6px;">Why You'll Love It ✨</h4>
-          <p style="font-size:0.86rem; color:var(--color-charcoal-muted); line-height:1.6;">${product.description}</p>
-        </div>
+        <!-- Right Column: Details, Pricing, Qty, and Actions -->
+        <div class="product-modal-info">
+          <div class="product-modal-meta-top">
+            <span class="product-modal-category">${product.categoryName || 'ISLAMIC ESSENTIALS'}</span>
+            <div class="product-modal-stars">
+              <span class="stars-gold">★★★★★</span>
+              <span class="stars-label">4.9 (120+ orders)</span>
+            </div>
+          </div>
 
-        <!-- Dual Action Footer Bar -->
-        <div style="display:flex; gap:12px; position:sticky; bottom:0; background:var(--color-white); padding-top:12px; border-top:1px solid var(--color-border);">
-          <button class="btn btn-outline" style="flex:1; border-radius:var(--radius-full);" onclick="UI.handleAddToCart('${product.id}');">
-            <i class="fa-solid fa-bag-shopping"></i> Add to Cart
-          </button>
-          <button class="btn btn-primary" style="flex:1.2; border-radius:var(--radius-full); background:var(--color-emerald);" onclick="UI.instantOrderWhatsApp('${product.id}');">
-            <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp ⚡
-          </button>
+          <h2 class="product-modal-title">${product.name}</h2>
+          ${product.subtitle ? `<p class="product-modal-subtitle">${product.subtitle}</p>` : ''}
+
+          <div class="product-modal-pricing">
+            <div class="price-row-main">
+              <span class="product-modal-price">₹${product.price}</span>
+              ${product.originalPrice ? `<span class="product-modal-old-price">₹${product.originalPrice}</span>` : ''}
+              <span class="product-modal-save-pill">Save ₹${(product.originalPrice ? product.originalPrice - product.price : Math.round(product.price * 0.2))}</span>
+            </div>
+            <div class="product-modal-tax-note">Inclusive of all taxes · Cash on Delivery & UPI available</div>
+          </div>
+
+          <div class="product-modal-stock-status">
+            <span class="stock-dot"></span>
+            <strong>In Stock</strong> &nbsp;·&nbsp; Ready for dispatch in Shirur Taluka
+          </div>
+
+          <div class="product-modal-desc-box">
+            <h4 class="desc-heading"><i class="fa-solid fa-circle-info text-emerald"></i> About This Product</h4>
+            <p class="desc-text">${product.description || 'Authentic high-quality Islamic essential carefully checked and verified for quality.'}</p>
+          </div>
+
+          <!-- Quantity Selector & Action Bar -->
+          <div class="product-modal-action-section">
+            <div class="product-modal-qty-row">
+              <span class="qty-label">Select Quantity:</span>
+              <div class="product-modal-qty-control">
+                <button type="button" class="qty-btn" onclick="UI.changeModalQty(-1)" aria-label="Decrease quantity">−</button>
+                <span id="modal-qty-val" class="qty-display">1</span>
+                <button type="button" class="qty-btn" onclick="UI.changeModalQty(1)" aria-label="Increase quantity">+</button>
+              </div>
+            </div>
+
+            <div class="product-modal-cta-buttons">
+              <button class="btn btn-outline product-modal-cart-btn" onclick="UI.handleAddToCart('${product.id}', UI.modalSelectedQty); UI.closeProductModal();">
+                <i class="fa-solid fa-bag-shopping"></i> Add to Cart
+              </button>
+              <button class="btn btn-primary product-modal-wa-btn" onclick="UI.instantOrderWhatsApp('${product.id}', UI.modalSelectedQty);">
+                <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp ⚡
+              </button>
+            </div>
+          </div>
+
         </div>
       </div>
     `;
@@ -481,8 +531,8 @@ const UI = {
     modal.classList.add("open");
   },
 
-  instantOrderWhatsApp(productId) {
-    this.handleAddToCart(productId, 1);
+  instantOrderWhatsApp(productId, qty = 1) {
+    this.handleAddToCart(productId, qty || 1);
     this.closeProductModal();
     Router.navigate("#checkout");
   },
@@ -881,6 +931,7 @@ const UI = {
     const emailInput = document.getElementById("edit-profile-email");
     const houseInput = document.getElementById("edit-profile-house");
     const areaInput = document.getElementById("edit-profile-area");
+    const villageInput = document.getElementById("edit-profile-village");
     const landmarkInput = document.getElementById("edit-profile-landmark");
     const pincodeInput = document.getElementById("edit-profile-pincode");
 
@@ -889,6 +940,7 @@ const UI = {
     if (emailInput) emailInput.value = customer.email || "";
     if (houseInput) houseInput.value = customer.house || "";
     if (areaInput) areaInput.value = customer.area || "";
+    if (villageInput) villageInput.value = customer.village || "";
     if (landmarkInput) landmarkInput.value = customer.landmark || "";
     if (pincodeInput) pincodeInput.value = customer.pincode || "412208";
 
@@ -907,6 +959,7 @@ const UI = {
     const email = document.getElementById("edit-profile-email")?.value.trim() || "";
     const house = document.getElementById("edit-profile-house")?.value.trim() || "";
     const area = document.getElementById("edit-profile-area")?.value.trim() || "";
+    const village = document.getElementById("edit-profile-village")?.value.trim() || "";
     const landmark = document.getElementById("edit-profile-landmark")?.value.trim() || "";
     const pincode = document.getElementById("edit-profile-pincode")?.value.trim() || "412208";
 
@@ -921,9 +974,10 @@ const UI = {
       email,
       house,
       area,
+      village,
       landmark,
       pincode: pincode,
-      city: "Shikrapur"
+      city: village || "Shikrapur"
     };
 
     Storage.saveCustomer(updatedCustomer);
@@ -942,6 +996,7 @@ const UI = {
     const phoneInput = document.getElementById("checkout-phone");
     const houseInput = document.getElementById("checkout-house");
     const areaInput = document.getElementById("checkout-area");
+    const villageInput = document.getElementById("checkout-village");
     const landmarkInput = document.getElementById("checkout-landmark");
     const pincodeInput = document.getElementById("checkout-pincode");
     const locationInput = document.getElementById("checkout-location-link");
@@ -950,6 +1005,7 @@ const UI = {
     if (phoneInput) phoneInput.value = customer.whatsapp || "";
     if (houseInput) houseInput.value = customer.house || "";
     if (areaInput) areaInput.value = customer.area || "";
+    if (villageInput) villageInput.value = customer.village || "";
     if (landmarkInput) landmarkInput.value = customer.landmark || "";
     if (pincodeInput) pincodeInput.value = customer.pincode || "412208";
     if (locationInput) locationInput.value = customer.locationLink || "";
@@ -1022,13 +1078,14 @@ const UI = {
     const phone = document.getElementById("checkout-phone")?.value.trim();
     const house = document.getElementById("checkout-house")?.value.trim();
     const area = document.getElementById("checkout-area")?.value.trim();
+    const village = document.getElementById("checkout-village")?.value.trim() || "";
     const landmark = document.getElementById("checkout-landmark")?.value.trim() || "";
     const pincode = document.getElementById("checkout-pincode")?.value.trim() || CONFIG.deliveryPincode;
     const notes = document.getElementById("checkout-notes")?.value.trim() || "";
     const locationLink = document.getElementById("checkout-location-link")?.value.trim() || "";
 
-    if (!name || !phone || !house || !area) {
-      alert("Please fill in your Name, WhatsApp Phone Number, and Address details!");
+    if (!name || !phone || !house || !area || !village) {
+      alert("Please fill in your Name, WhatsApp Phone Number, Village/Town, and Address details!");
       return;
     }
 
@@ -1044,10 +1101,11 @@ const UI = {
       whatsapp: phone,
       house,
       area,
+      village,
       landmark,
       locationLink,
       pincode: pincode,
-      city: CONFIG.deliveryCity,
+      city: village || CONFIG.deliveryCity,
       orderNotes: notes
     };
 

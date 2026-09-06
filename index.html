@@ -27,10 +27,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheets with Cache Busters -->
-  <link rel="stylesheet" href="assets/css/app.bundle.css?v=1.1.0">
-  <link rel="stylesheet" href="assets/css/variables.css?v=1.1.0">
-  <link rel="stylesheet" href="assets/css/style.css?v=1.1.0">
-  <link rel="stylesheet" href="assets/css/components.css?v=1.1.0">
+  <link rel="stylesheet" href="assets/css/app.bundle.css?v=1.1.2">
+  <link rel="stylesheet" href="assets/css/variables.css?v=1.1.2">
+  <link rel="stylesheet" href="assets/css/style.css?v=1.1.2">
+  <link rel="stylesheet" href="assets/css/components.css?v=1.1.2">
 
   <!-- Inline critical search and category dropdown styling to avoid cache lag -->
   <style>
@@ -819,21 +819,7 @@
               </div>
               <div class="profile-menu-texts">
                 <div class="profile-menu-title">Saved Addresses</div>
-                <div class="profile-menu-sub">Manage your delivery addresses in Shikrapur</div>
-              </div>
-            </div>
-            <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
-          </div>
-
-          <!-- Payment Methods -->
-          <div class="profile-menu-row" onclick="alert('💳 Payment Mode: Cash on Delivery & Direct UPI via WhatsApp. No card details needed!')">
-            <div class="profile-menu-left">
-              <div class="profile-menu-icon">
-                <i class="fa-solid fa-credit-card"></i>
-              </div>
-              <div class="profile-menu-texts">
-                <div class="profile-menu-title">Payment Methods</div>
-                <div class="profile-menu-sub">Cards, UPI and more</div>
+                <div class="profile-menu-sub">Manage your delivery addresses (Koregaon to Shirur)</div>
               </div>
             </div>
             <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
@@ -1056,8 +1042,19 @@
               <input type="text" id="checkout-area" placeholder="Road Name, Area Colony" required class="form-control">
             </div>
             <div class="form-group">
+              <label class="form-label">Village / Town / City *</label>
+              <input type="text" id="checkout-village" placeholder="e.g. Shikrapur / Koregaon / Shirur" required class="form-control">
+            </div>
+          </div>
+
+          <div class="checkout-grid-2">
+            <div class="form-group">
               <label class="form-label">Landmark (Optional)</label>
               <input type="text" id="checkout-landmark" placeholder="Near Landmark (e.g. Near Jama Masjid)" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Delivery Pincode *</label>
+              <input type="text" id="checkout-pincode" placeholder="e.g. 412208" class="form-control" required>
             </div>
           </div>
 
@@ -1077,15 +1074,9 @@
             </div>
           </div>
 
-          <div class="checkout-grid-2">
-            <div class="form-group">
-              <label class="form-label">Delivery Pincode *</label>
-              <input type="text" id="checkout-pincode" placeholder="e.g. 412208" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Order Notes (Optional)</label>
-              <input type="text" id="checkout-notes" placeholder="Delivery instructions..." class="form-control">
-            </div>
+          <div class="form-group" style="margin-bottom:6px;">
+            <label class="form-label">Order Notes (Optional)</label>
+            <input type="text" id="checkout-notes" placeholder="Delivery instructions (e.g. Call before arriving)..." class="form-control">
           </div>
         </div>
 
@@ -1105,7 +1096,7 @@
               <span id="checkout-subtotal" style="font-weight:700;">₹0</span>
             </div>
             <div style="display:flex; justify-content:space-between; font-size:0.88rem; margin-bottom:6px;">
-              <span class="text-muted">Delivery Charges (Shikrapur)</span>
+              <span class="text-muted">Delivery Charges (Koregaon to Shirur)</span>
               <span id="checkout-delivery" style="font-weight:700; color:var(--color-emerald);">FREE</span>
             </div>
             <div style="display:flex; justify-content:space-between; font-size:0.88rem; margin-bottom:12px;">
@@ -1124,7 +1115,7 @@
           <i class="fa-brands fa-whatsapp" style="font-size:1.3rem;"></i> Place Order on WhatsApp ⚡
         </button>
         <p style="text-align:center; font-size:0.75rem; color:var(--color-charcoal-muted); margin-bottom:24px;">
-          Your order and GPS location will be sent directly to our Shikrapur store on WhatsApp.
+          Your order and GPS location will be sent directly to our store on WhatsApp.
         </p>
       </div>
     </section>
@@ -1172,7 +1163,7 @@
 
   <!-- 6. Product Details Modal / Bottom Sheet -->
   <div id="product-modal" class="modal-backdrop">
-    <div class="modal-box">
+    <div class="modal-box product-modal-dialog">
       <button class="modal-close-btn" onclick="UI.closeProductModal()" aria-label="Close Product Details">
         <i class="fa-solid fa-xmark"></i>
       </button>
@@ -1236,14 +1227,20 @@
             <input type="text" id="edit-profile-area" class="form-control" placeholder="Road Name, Area Colony" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Landmark (Optional)</label>
-            <input type="text" id="edit-profile-landmark" class="form-control" placeholder="Near Landmark">
+            <label class="form-label">Village / Town / City *</label>
+            <input type="text" id="edit-profile-village" class="form-control" placeholder="e.g. Shikrapur / Koregaon / Shirur" required>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">Delivery Pincode *</label>
-          <input type="text" id="edit-profile-pincode" class="form-control" placeholder="e.g. 412208" required>
+        <div class="checkout-grid-2">
+          <div class="form-group">
+            <label class="form-label">Landmark (Optional)</label>
+            <input type="text" id="edit-profile-landmark" class="form-control" placeholder="Near Landmark">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Delivery Pincode *</label>
+            <input type="text" id="edit-profile-pincode" class="form-control" placeholder="e.g. 412208" required>
+          </div>
         </div>
 
         <div style="display:flex; gap:12px; margin-top:20px;">
@@ -1326,13 +1323,13 @@
   </footer>
 
   <!-- Scripts with Cache Busters -->
-  <script src="assets/js/config.js?v=1.1.0"></script>
-  <script src="assets/js/products-data.js?v=1.1.0"></script>
-  <script src="assets/js/storage.js?v=1.1.0"></script>
-  <script src="assets/js/whatsapp.js?v=1.1.0"></script>
-  <script src="assets/js/cart.js?v=1.1.0"></script>
-  <script src="assets/js/ui.js?v=1.1.0"></script>
-  <script src="assets/js/router.js?v=1.1.0"></script>
-  <script src="assets/js/app.js?v=1.1.0"></script>
+  <script src="assets/js/config.js?v=1.1.2"></script>
+  <script src="assets/js/products-data.js?v=1.1.2"></script>
+  <script src="assets/js/storage.js?v=1.1.2"></script>
+  <script src="assets/js/whatsapp.js?v=1.1.2"></script>
+  <script src="assets/js/cart.js?v=1.1.2"></script>
+  <script src="assets/js/ui.js?v=1.1.2"></script>
+  <script src="assets/js/router.js?v=1.1.2"></script>
+  <script src="assets/js/app.js?v=1.1.2"></script>
 </body>
 </html>

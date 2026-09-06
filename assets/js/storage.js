@@ -145,6 +145,7 @@ const Storage = {
       whatsapp: "",
       house: "",
       area: "",
+      village: "",
       landmark: "",
       pincode: "412208",
       city: "Shikrapur",

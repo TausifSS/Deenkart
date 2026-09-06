@@ -48,8 +48,8 @@ Discount: ${discountLine}
 📍 *Delivery Address:*
 House/Flat: ${customer.house || ''}
 Area/Street: ${customer.area || ''}
-Landmark: ${landmarkText}
-Pincode: 412208 (Shikrapur)
+${customer.village ? `Village/Town: ${customer.village}\n` : ''}Landmark: ${landmarkText}
+Pincode: ${customer.pincode || '412208'} (Koregaon to Shirur)
 ${locationText}
 📝 *Order Notes:*
 ${notesText}
@@ -77,7 +77,7 @@ DeenKart — "Islamic Essentials for a Better Tomorrow"`;
     const message = 
 `Assalamu Alaikum DeenKart Team! 🌿
 
-I am looking for this Islamic product in Shikrapur:
+I am looking for this Islamic product:
 *"${productQuery}"*
 
 Could you please check if it is available or can be arranged for delivery? JazakAllahu Khairan!`;
@@ -100,7 +100,7 @@ Could you please check if it is available or can be arranged for delivery? Jazak
   /**
    * Direct customer support WhatsApp deep link
    */
-  createSupportLink(customText = "Assalamu Alaikum DeenKart Team! I need some help with my Islamic essentials shopping in Shikrapur.") {
+  createSupportLink(customText = "Assalamu Alaikum DeenKart Team! I need some help with my Islamic essentials shopping.") {
     const encoded = encodeURIComponent(customText);
     const phone = CONFIG.whatsappNumber.replace(/[^0-9]/g, '');
     return `https://wa.me/${phone}?text=${encoded}`;
