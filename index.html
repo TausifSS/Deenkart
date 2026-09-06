@@ -27,13 +27,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheets with Cache Busters -->
-  <link rel="stylesheet" href="assets/css/app.bundle.css?v=1.1.4">
-  <link rel="stylesheet" href="assets/css/variables.css?v=1.1.4">
-  <link rel="stylesheet" href="assets/css/style.css?v=1.1.4">
-  <link rel="stylesheet" href="assets/css/components.css?v=1.1.4">
+  <link rel="stylesheet" href="assets/css/app.bundle.css?v=1.1.5">
+  <link rel="stylesheet" href="assets/css/variables.css?v=1.1.5">
+  <link rel="stylesheet" href="assets/css/style.css?v=1.1.5">
+  <link rel="stylesheet" href="assets/css/components.css?v=1.1.5">
 
   <!-- Inline critical search and category dropdown styling to avoid cache lag -->
   <style>
+    /* Hide global mobile search bar on search, checkout, and account pages so only one search bar appears */
+    body.route-search .mobile-search-bar,
+    body.route-checkout .mobile-search-bar,
+    body.route-orders .mobile-search-bar,
+    body.route-profile .mobile-search-bar,
+    body.route-profile-edit .mobile-search-bar,
+    body.route-order-success .mobile-search-bar,
+    body:has(#view-search.active) .mobile-search-bar,
+    body:has(#view-checkout.active) .mobile-search-bar,
+    body:has(#view-orders.active) .mobile-search-bar,
+    body:has(#view-profile.active) .mobile-search-bar {
+      display: none !important;
+    }
+
     .search-autocomplete-dropdown {
       display: none;
       position: absolute;
@@ -902,7 +916,7 @@
         
         <!-- 1. Search Bar with Back Button, Input & Clear Button (Exact Reference Match) -->
         <div class="search-top-nav-bar">
-          <button class="search-nav-back-btn" onclick="history.back() || Router.navigate('#home')" aria-label="Go Back">
+          <button class="search-nav-back-btn" onclick="handleSearchBack()" aria-label="Go Back">
             <i class="fa-solid fa-chevron-left"></i>
           </button>
           <div class="search-box-pill">
@@ -1413,13 +1427,13 @@
   </footer>
 
   <!-- Scripts with Cache Busters -->
-  <script src="assets/js/config.js?v=1.1.4"></script>
-  <script src="assets/js/products-data.js?v=1.1.4"></script>
-  <script src="assets/js/storage.js?v=1.1.4"></script>
-  <script src="assets/js/whatsapp.js?v=1.1.4"></script>
-  <script src="assets/js/cart.js?v=1.1.4"></script>
-  <script src="assets/js/ui.js?v=1.1.4"></script>
-  <script src="assets/js/router.js?v=1.1.4"></script>
-  <script src="assets/js/app.js?v=1.1.4"></script>
+  <script src="assets/js/config.js?v=1.1.5"></script>
+  <script src="assets/js/products-data.js?v=1.1.5"></script>
+  <script src="assets/js/storage.js?v=1.1.5"></script>
+  <script src="assets/js/whatsapp.js?v=1.1.5"></script>
+  <script src="assets/js/cart.js?v=1.1.5"></script>
+  <script src="assets/js/ui.js?v=1.1.5"></script>
+  <script src="assets/js/router.js?v=1.1.5"></script>
+  <script src="assets/js/app.js?v=1.1.5"></script>
 </body>
 </html>

@@ -18,7 +18,12 @@ const Router = {
   },
 
   navigate(hash) {
-    window.location.hash = hash.startsWith("#") ? hash : `#${hash}`;
+    const targetHash = hash.startsWith("#") ? hash : `#${hash}`;
+    if (window.location.hash === targetHash) {
+      this.handleRouting();
+    } else {
+      window.location.hash = targetHash;
+    }
   },
 
   handleRouting() {

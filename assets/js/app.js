@@ -25,6 +25,23 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("deenkart:routeChanged", (e) => {
     const { path, segments, query } = e.detail;
 
+    // Set route-* class on document.body for scoped styling
+    document.body.className = document.body.className
+      .replace(/\broute-[a-z0-9_-]+\b/g, "")
+      .trim();
+    const routeKey = (path.replace("#", "").split("/")[0]) || "home";
+    document.body.classList.add(`route-${routeKey}`);
+
+    // Hide mobile search bar on search, checkout, and account pages so it never duplicates
+    const mobileSearchBar = document.querySelector(".mobile-search-bar");
+    if (mobileSearchBar) {
+      if (path === "#search" || path === "#checkout" || path.startsWith("#order-success") || path === "#orders" || path === "#profile" || path === "#profile-edit") {
+        mobileSearchBar.style.display = "none";
+      } else {
+        mobileSearchBar.style.display = "";
+      }
+    }
+
     // Hide all view sections
     document.querySelectorAll(".view-section").forEach(sec => sec.classList.remove("active"));
 
@@ -333,6 +350,7 @@ function setupSearchEngine() {
     viewSearchInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && e.target.value.trim()) {
         Storage.addRecentSearch(e.target.value.trim());
+        renderRecentSearches();
       }
     });
   }
@@ -350,6 +368,14 @@ function setupSearchEngine() {
       catSortDropdown.classList.remove("show");
     }
   });
+}
+
+function handleSearchBack() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    Router.navigate('#home');
+  }
 }
 
 function handleSearchRoute(queryPart) {
@@ -371,6 +397,10 @@ function handleSearchRoute(queryPart) {
   if (input) {
     input.value = q;
     if (clearBtn) clearBtn.style.display = q.length > 0 ? "flex" : "none";
+    // Smooth auto-focus on open
+    setTimeout(() => {
+      input.focus();
+    }, 150);
   }
 
   // Reset pills to "All"
@@ -395,6 +425,20 @@ function handleSearchRoute(queryPart) {
 
 function executeSearchFilter(term) {
   SearchEngine.currentQuery = term || "";
+  const input = document.getElementById("view-search-input");
+  const clearBtn = document.getElementById("view-search-clear-btn");
+  const desktopSearchInput = document.getElementById("desktop-search-input");
+
+  if (input && input.value !== (term || "")) {
+    input.value = term || "";
+  }
+  if (desktopSearchInput && desktopSearchInput.value !== (term || "")) {
+    desktopSearchInput.value = term || "";
+  }
+  if (clearBtn) {
+    clearBtn.style.display = (term && term.length > 0) ? "flex" : "none";
+  }
+
   const allProducts = Storage.getProducts();
   let base = allProducts;
   if (SearchEngine.currentCategory) {
@@ -475,7 +519,7 @@ function renderSearchResults(items, queryLabel) {
       <div style="grid-column: 1/-1; text-align:center; padding: 48px 16px; background:var(--color-white); border-radius:var(--radius-xl); border:1px solid var(--color-border);">
         <div style="font-size:3rem; margin-bottom:12px;">🔍</div>
         <h3 style="font-size:1.1rem; font-weight:700; color:var(--color-charcoal); margin-bottom:6px;">No products found for "${queryLabel}"</h3>
-        <p style="font-size:0.86rem; color:var(--color-charcoal-muted); margin-bottom:18px;">Can't find what you are looking for? We can arrange it for you in Shikrapur!</p>
+        <p style="font-size:0.86rem; color:var(--color-charcoal-muted); margin-bottom:18px;">Can't find what you are looking for? We can arrange it for you!</p>
         <button class="btn btn-primary" onclick="requestProductViaWhatsApp('${queryLabel}')">
           <i class="fa-brands fa-whatsapp"></i> Request Product via WhatsApp
         </button>
@@ -521,6 +565,7 @@ window.applySearchSubFilter = applySearchSubFilter;
 window.toggleSortDropdown = toggleSortDropdown;
 window.applySearchSort = applySearchSort;
 window.executeSearchFilter = executeSearchFilter;
+window.handleSearchBack = handleSearchBack;
 
 /**
  * Mobile Sidebar Drawer Controls
