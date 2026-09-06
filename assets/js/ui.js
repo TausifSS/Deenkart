@@ -1240,8 +1240,8 @@ const UI = {
     this.updateHeaderBadges();
   },
 
-  // Direct WhatsApp Checkout
-  executeWhatsAppOrder() {
+  // In-App Direct Checkout (No WhatsApp Redirect)
+  executePlaceOrder() {
     const summary = CartService.getSummary();
     if (summary.items.length === 0) {
       this.showCustomModal({
@@ -1268,7 +1268,7 @@ const UI = {
     if (!name || !phone || !house || !area || !village) {
       this.showCustomModal({
         title: "Incomplete Address",
-        message: "Please fill in your Name, WhatsApp Number, House/Flat, Area, and Village/Town so our rider can deliver smoothly.",
+        message: "Please fill in your Name, Phone Number, House/Flat, Area, and Village/Town so our rider can deliver smoothly.",
         icon: "fa-solid fa-triangle-exclamation",
         iconColor: "#F59E0B"
       });
@@ -1303,23 +1303,22 @@ const UI = {
       deliveryFee: summary.deliveryFee,
       discount: summary.discount,
       total: summary.total,
-      paymentMethod: "UPI",
-      paymentStatus: "Payment Pending",
+      paymentMethod: "Cash on Delivery",
+      paymentStatus: "Payment on Delivery",
       orderStatus: "Order Placed",
       customer: customer
     };
 
-    // CRITICAL: Launch WhatsApp immediately within user click gesture
-    const whatsappUrl = WhatsAppService.createWhatsAppLink(newOrder);
-    WhatsAppService.launchUrl(whatsappUrl);
+    // Save order locally and navigate directly to order success (No WhatsApp redirect!)
+    Storage.saveCustomer(customer);
+    Storage.saveOrder(newOrder);
+    Storage.clearCart();
+    UI.updateHeaderBadges();
+    Router.navigate(`#order-success/${orderId}`);
+  },
 
-    setTimeout(() => {
-      Storage.saveCustomer(customer);
-      Storage.saveOrder(newOrder);
-      Storage.clearCart();
-      UI.updateHeaderBadges();
-      Router.navigate(`#order-success/${orderId}`);
-    }, 100);
+  executeWhatsAppOrder() {
+    return this.executePlaceOrder();
   },
 
   renderOrderSuccess(orderId) {
