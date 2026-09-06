@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DeenKart - Islamic Essentials for a Better Tomorrow</title>
+  <meta name="description" content="Authentic Islamic essentials store in Shikrapur, Maharashtra (412208). Holy Qur'an, Islamic Books, Prayer Mats, Attar, Modest Wear and Gifts.">
+  
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0E5A43">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DeenKart">
+
+  <!-- Favicon & Apple Touch Icons -->
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="assets/images/icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="assets/images/icon-512.png">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets with Cache Busters -->
+  <link rel="stylesheet" href="assets/css/app.bundle.css?v=1.0.7">
+  <link rel="stylesheet" href="assets/css/variables.css?v=1.0.7">
+  <link rel="stylesheet" href="assets/css/style.css?v=1.0.7">
+  <link rel="stylesheet" href="assets/css/components.css?v=1.0.7">
+
+  <!-- Inline critical search and category dropdown styling to avoid cache lag -->
+  <style>
+    .search-autocomplete-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.12);
+      z-index: 9999;
+      overflow: hidden;
+    }
+    .autocomplete-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: #17211D;
+      cursor: pointer;
+      border-bottom: 1px solid #F1F5F9;
+      background: #FFFFFF;
+      transition: background 0.15s ease;
+    }
+    .autocomplete-item:last-child { border-bottom: none; }
+    .autocomplete-item:hover { background: #F8FAF9; color: #0E5A43; }
+    .search-sort-dropdown-box { display: none; }
+    .search-sort-dropdown-box.show { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- PWA Install Banner (Mobile) -->
+  <div id="pwa-install-banner" style="display:none; background:var(--color-charcoal); color:#fff; padding:10px 16px; align-items:center; justify-content:space-between; border-bottom:1px solid var(--color-gold); font-size:0.82rem; z-index:999; position:relative;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <img src="assets/images/logo.png" alt="DeenKart" style="height:28px;">
+      <span>Install <strong>DeenKart App</strong> for faster shopping!</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button class="btn btn-gold btn-sm" onclick="triggerPwaInstall()" style="padding:4px 10px; font-size:0.75rem;">Install</button>
+      <button onclick="dismissPwaBanner()" style="color:#94A3B8; font-size:1rem; border:none; background:none; cursor:pointer;">✕</button>
+    </div>
+  </div>
+
+  <!-- 1. Top Announcement Bar (Desktop) -->
+  <div class="top-announcement-bar">
+    <div class="app-container announcement-inner">
+      <div class="announcement-left">
+        <span class="announcement-item">
+          <i class="fa-solid fa-bolt text-gold"></i> Fast delivery in Shikrapur & delivery in Shirur Taluka only
+        </span>
+      </div>
+      <div class="announcement-center">
+        <span class="announcement-item"><i class="fa-solid fa-truck-fast"></i> Delivery ₹20 (FREE above ₹499)</span>
+        <span class="announcement-item"><i class="fa-solid fa-shield-halved"></i> 100% Original Products</span>
+        <span class="announcement-item"><i class="fa-solid fa-gift"></i> Exciting Offers</span>
+      </div>
+      <div class="announcement-right">
+        <a href="https://wa.me/919561762651" target="_blank" class="announcement-link">
+          <i class="fa-brands fa-whatsapp text-emerald" style="font-size:1rem;"></i> 24/7 WhatsApp Support
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Main Header (Clean Redesigned Bar) -->
+  <header class="site-header">
+    <div class="app-container header-inner">
+      <!-- Left: Hamburger & Logo -->
+      <div class="header-left">
+        <button id="open-sidebar-btn" class="menu-toggle-btn" aria-label="Open Navigation Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <a href="#home" class="brand-logo-wrap">
+          <img src="assets/images/logo.png" alt="DeenKart - Islamic Essentials for a Better Tomorrow" class="brand-logo-img">
+        </a>
+      </div>
+
+      <!-- Center: Desktop Search Pill -->
+      <div class="header-search-wrap">
+        <div class="search-input-box">
+          <i class="fa-solid fa-magnifying-glass" style="color:var(--color-charcoal-muted);"></i>
+          <input type="text" id="desktop-search-input" placeholder="Search for products, essentials, books, attar..." autocomplete="off">
+          <button class="search-submit-btn" onclick="Router.navigate('#search?q=' + encodeURIComponent(document.getElementById('desktop-search-input').value))" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+        <div id="search-autocomplete-box" class="search-autocomplete-dropdown"></div>
+      </div>
+
+      <!-- Right: Action Icons (Bell, Heart, Bag, User) -->
+      <div class="header-actions">
+        <button class="header-btn" onclick="Router.navigate('#notifications')" aria-label="Notifications">
+          <i class="fa-regular fa-bell"></i>
+        </button>
+        <button class="header-btn" onclick="Router.navigate('#wishlist')" aria-label="Wishlist">
+          <i class="fa-regular fa-heart"></i>
+          <span class="badge-dot wishlist-badge-count" style="display:none;">0</span>
+        </button>
+        <button class="header-btn" onclick="Router.navigate('#checkout')" aria-label="Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="badge-dot cart-badge-count" style="display:none;">0</span>
+        </button>
+        <button class="header-btn" onclick="Router.navigate('#profile')" aria-label="Account">
+          <i class="fa-regular fa-user"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Search Bar below Header -->
+    <div class="mobile-search-bar">
+      <div class="mobile-search-inner" onclick="Router.navigate('#search')">
+        <i class="fa-solid fa-magnifying-glass" style="color:var(--color-charcoal-muted);"></i>
+        <input type="text" id="mobile-search-input" placeholder="Search for products, brands..." readonly>
+        <i class="fa-solid fa-sliders" style="color:var(--color-charcoal-muted);"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. Desktop Sub-Navigation Row (Exact Reference Match - No WhatsApp Store) -->
+  <nav class="desktop-nav-row">
+    <a href="#home" class="desktop-nav-link active">Home</a>
+    <a href="#categories" class="desktop-nav-link">Categories ▾</a>
+    <a href="#offers" class="desktop-nav-link">Offers</a>
+    <a href="#orders" class="desktop-nav-link">Orders</a>
+    <a href="#profile" class="desktop-nav-link">My Account</a>
+  </nav>
+
+  <!-- 4. Slide-Out Mobile Sidebar Drawer -->
+  <div id="sidebar-backdrop" class="sidebar-backdrop">
+    <aside class="sidebar-drawer">
+      <div class="sidebar-header" style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid var(--color-border);">
+        <img src="assets/images/logo.png" alt="DeenKart" style="height:34px; object-fit:contain;">
+        <button id="close-sidebar-btn" class="sidebar-close-btn" aria-label="Close Menu" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- User Profile Preview in Sidebar -->
+      <div class="sidebar-user-preview" onclick="Router.navigate('#profile')" style="display:flex; align-items:center; gap:12px; padding:16px 20px; background:var(--color-soft-green); border-bottom:1px solid var(--color-border); cursor:pointer;">
+        <div style="width:44px; height:44px; border-radius:50%; background:var(--color-emerald); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.1rem;">T</div>
+        <div>
+          <h4 id="sidebar-user-name" style="font-size:0.95rem; font-weight:800; color:var(--color-charcoal); margin:0;">Tausif Shaikh</h4>
+          <p style="font-size:0.75rem; color:var(--color-emerald); margin:0; font-weight:700;">View and edit profile <i class="fa-solid fa-chevron-right" style="font-size:0.6rem;"></i></p>
+        </div>
+      </div>
+
+      <ul class="sidebar-nav-list" style="list-style:none; padding:10px 0; margin:0;">
+        <li class="sidebar-nav-item">
+          <a href="#home" style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; font-weight:700;">
+            <span><i class="fa-solid fa-house" style="width:24px; color:var(--color-emerald);"></i> Home</span>
+            <i class="fa-solid fa-chevron-right text-muted" style="font-size:0.75rem;"></i>
+          </a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a href="#categories" style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; font-weight:700;">
+            <span><i class="fa-solid fa-table-cells-large" style="width:24px; color:var(--color-emerald);"></i> Categories</span>
+            <i class="fa-solid fa-chevron-right text-muted" style="font-size:0.75rem;"></i>
+          </a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a href="#offers" style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; font-weight:700;">
+            <span><i class="fa-solid fa-percent" style="width:24px; color:var(--color-emerald);"></i> Offers</span>
+            <i class="fa-solid fa-chevron-right text-muted" style="font-size:0.75rem;"></i>
+          </a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a href="#orders" style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; font-weight:700;">
+            <span><i class="fa-solid fa-box-archive" style="width:24px; color:var(--color-emerald);"></i> My Orders</span>
+            <i class="fa-solid fa-chevron-right text-muted" style="font-size:0.75rem;"></i>
+          </a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a href="#wishlist" style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; font-weight:700;">
+            <span><i class="fa-regular fa-heart" style="width:24px; color:var(--color-emerald);"></i> My Wishlist</span>
+            <i class="fa-solid fa-chevron-right text-muted" style="font-size:0.75rem;"></i>
+          </a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a href="#profile" style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; font-weight:700;">
+            <span><i class="fa-solid fa-location-dot" style="width:24px; color:var(--color-emerald);"></i> Saved Address</span>
+            <i class="fa-solid fa-chevron-right text-muted" style="font-size:0.75rem;"></i>
+          </a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a href="javascript:void(0)" onclick="triggerPwaInstall()" style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; font-weight:700;">
+            <span><i class="fa-solid fa-download" style="width:24px; color:var(--color-gold);"></i> Install App</span>
+            <i class="fa-solid fa-chevron-right text-muted" style="font-size:0.75rem;"></i>
+          </a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a href="https://wa.me/919561762651" target="_blank" style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; font-weight:700;">
+            <span><i class="fa-brands fa-whatsapp" style="width:24px; color:#25D366;"></i> Help & Support</span>
+            <i class="fa-solid fa-chevron-right text-muted" style="font-size:0.75rem;"></i>
+          </a>
+        </li>
+      </ul>
+
+      <div style="padding:14px; margin:auto 16px 16px; background:#FAF7EF; border-radius:var(--radius-md); border:1px solid var(--color-border); text-align:center;">
+        <i class="fa-solid fa-book-quran text-emerald" style="font-size:1.2rem; margin-bottom:4px;"></i>
+        <p style="font-family:var(--font-serif); font-size:0.8rem; font-style:italic; margin:0;">
+          "And whoever puts his trust in Allah, then He is sufficient for him."
+        </p>
+        <span style="font-size:0.68rem; color:var(--color-gold-dark); font-weight:700;">Surah At-Talaq (65:3)</span>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 5. Main Application Content Area (Views) -->
+  <main class="main-content">
+
+    <!-- ================= VIEW 1: HOME ================= -->
+    <section id="view-home" class="view-section active">
+      <div class="app-container">
+        
+        <!-- Hero Banner Card (Reference Match) -->
+        <div class="hero-banner-box">
+          <div class="hero-banner-content">
+            <div class="hero-banner-title">Islamic Essentials <br><span style="color:#0E5A43;">For a Better Tomorrow</span></div>
+            <div class="hero-banner-desc">100% Original Products • Fast Delivery in Shikrapur & Shirur Taluka • Exciting Offers</div>
+            <button class="btn btn-primary hero-banner-btn" onclick="Router.navigate('#categories')">
+              Shop Now →
+            </button>
+          </div>
+          <img src="assets/images/logo.png" alt="DeenKart" class="hero-banner-img">
+        </div>
+
+        <!-- 1. Shop by Category ✨ (Card Container with Horizontal Sliding Rings) -->
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-title">Shop by Category ✨</div>
+            <a href="#categories" class="section-card-link">View All Categories →</a>
+          </div>
+          <div id="categories-scroller" class="horizontal-scroll-container"></div>
+        </div>
+
+        <!-- 2. Best Sellers 🔥 (Card Container with Horizontal Sliding Product Cards) -->
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-title">Best Sellers 🔥</div>
+            <a href="#search?q=bestseller" class="section-card-link">View All Best Sellers →</a>
+          </div>
+          <div id="home-bestsellers-products" class="horizontal-scroll-container"></div>
+        </div>
+
+        <!-- 3. Trending Products ⚡ (Card Container with Horizontal Sliding Product Cards) -->
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-title">Trending Products ⚡</div>
+            <a href="#search" class="section-card-link">View All Trending →</a>
+          </div>
+          <div id="home-trending-products" class="horizontal-scroll-container"></div>
+        </div>
+
+        <!-- Trust Badges Mini Row (Matching Reference) -->
+        <div class="trust-cards-row">
+          <div class="trust-mini-card">
+            <div class="trust-mini-icon">🛵</div>
+            <div class="trust-mini-text">Fast Delivery<br><span style="color:var(--color-charcoal-muted); font-size:0.68rem;">Shikrapur & Shirur</span></div>
+          </div>
+          <div class="trust-mini-card">
+            <div class="trust-mini-icon">🛡️</div>
+            <div class="trust-mini-text">100% Original<br><span style="color:var(--color-charcoal-muted); font-size:0.68rem;">Halal & Verified</span></div>
+          </div>
+          <div class="trust-mini-card">
+            <div class="trust-mini-icon">🎁</div>
+            <div class="trust-mini-text">Special Deals<br><span style="color:var(--color-charcoal-muted); font-size:0.68rem;">Direct Discounts</span></div>
+          </div>
+        </div>
+
+        <!-- Daily Hadith Quote Card -->
+        <div class="quote-banner-card">
+          <div class="quote-icon-circle">
+            <i class="fa-solid fa-book-quran"></i>
+          </div>
+          <div class="quote-arabic">خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ</div>
+          <div class="quote-text">"The best among you are those who learn the Qur'an and teach it."</div>
+          <div class="quote-citation">Sahih al-Bukhari (5027)</div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================= VIEW 2: CATEGORIES ================= -->
+    <section id="view-categories" class="view-section">
+      <div class="app-container" style="padding-top:16px;">
+        <div style="margin-bottom:18px;">
+          <h1 style="font-size:1.4rem; font-weight:800; color:var(--color-charcoal); margin-bottom:4px;">Categories</h1>
+          <p style="font-size:0.86rem; color:var(--color-charcoal-muted);">Explore Our Curated Islamic Collection</p>
+        </div>
+
+        <div id="categories-page-grid" style="display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; margin-bottom:28px;"></div>
+
+        <div class="quote-banner-card">
+          <div class="quote-icon-circle"><i class="fa-solid fa-book-open-reader"></i></div>
+          <div class="quote-text">"The best of you are those who learn the Qur'an and teach it to others."</div>
+          <div class="quote-citation">Sahih al-Bukhari (5027)</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================= VIEW 2B: DEDICATED CATEGORY VIEW ================= -->
+    <section id="view-category" class="view-section">
+      <div class="app-container" style="padding-top:12px; padding-bottom:40px;">
+        
+        <!-- Category Top Nav Bar (Back Button + Breadcrumbs) -->
+        <div class="category-detail-nav">
+          <button class="category-nav-back-btn" onclick="history.back() || Router.navigate('#categories')" aria-label="Back to Categories">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="category-nav-breadcrumb">
+            <a href="#home">Home</a> <i class="fa-solid fa-chevron-right" style="font-size:0.65rem; color:#94A3B8;"></i>
+            <a href="#categories">Categories</a> <i class="fa-solid fa-chevron-right" style="font-size:0.65rem; color:#94A3B8;"></i>
+            <span id="category-breadcrumb-current" style="color:var(--color-charcoal); font-weight:700;">Category</span>
+          </div>
+        </div>
+
+        <!-- Category Hero Banner -->
+        <div class="category-hero-banner" id="category-hero-card">
+          <div class="category-hero-info">
+            <span class="category-badge-pill" id="category-badge-count">Products</span>
+            <h1 class="category-hero-title" id="category-hero-title">Category Name</h1>
+            <p class="category-hero-desc" id="category-hero-desc">Explore authentic Islamic essentials.</p>
+            <div class="category-hero-delivery-tag">
+              <i class="fa-solid fa-bolt text-gold"></i> Fast delivery in Shikrapur & Shirur Taluka
+            </div>
+          </div>
+          <div class="category-hero-img-box" id="category-hero-img-box">
+            <img id="category-hero-img" src="" alt="" style="display:none;">
+          </div>
+        </div>
+
+        <!-- Category Controls Bar (Sub-filters / Count & Sort By) -->
+        <div class="category-controls-bar">
+          <div id="category-subfilter-bar" class="search-subfilter-bar" style="display:none; margin-bottom:12px;"></div>
+          
+          <div class="category-sort-row">
+            <span id="category-product-count-label" class="category-count-label">Showing products</span>
+            <div class="sort-menu-container">
+              <button id="category-sort-btn" class="search-sort-pill-btn" onclick="toggleCategorySortDropdown(event)">
+                <i class="fa-solid fa-arrow-down-short-wide"></i> Sort By
+              </button>
+              <div id="category-sort-dropdown" class="search-sort-dropdown-box">
+                <div class="sort-dropdown-item active" onclick="applyCategorySort('popular')">
+                  <span>Popularity</span>
+                  <i class="fa-solid fa-check sort-check"></i>
+                </div>
+                <div class="sort-dropdown-item" onclick="applyCategorySort('price-low')">
+                  <span>Price: Low to High</span>
+                  <i class="fa-solid fa-check sort-check"></i>
+                </div>
+                <div class="sort-dropdown-item" onclick="applyCategorySort('price-high')">
+                  <span>Price: High to Low</span>
+                  <i class="fa-solid fa-check sort-check"></i>
+                </div>
+                <div class="sort-dropdown-item" onclick="applyCategorySort('rating')">
+                  <span>Highest Rated</span>
+                  <i class="fa-solid fa-check sort-check"></i>
+                </div>
+                <div class="sort-dropdown-item" onclick="applyCategorySort('discount')">
+                  <span>Biggest Discount</span>
+                  <i class="fa-solid fa-check sort-check"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Products 2-Column Grid -->
+        <div id="category-products-grid" class="search-results-grid"></div>
+
+      </div>
+    </section>
+
+
+    <!-- ================= VIEW 3: SPECIAL OFFERS ================= -->
+    <section id="view-offers" class="view-section">
+      <div class="app-container" style="padding-top:16px;">
+        
+        <!-- 1. Special Offers Header with Mosque & Lantern Art (Ref Match) -->
+        <div class="offers-header-wrap">
+          <div class="offers-header-text">
+            <h1 class="offers-page-title">Special Offers</h1>
+            <p class="offers-page-sub">Good Products. Greater Blessings.</p>
+          </div>
+          <div class="offers-header-decoration">
+            <div class="offers-watermark">
+              <svg width="84" height="60" viewBox="0 0 100 70" fill="none" class="mosque-svg">
+                <path d="M50 15C48 15 46 17 46 19C46 25 38 29 38 37C38 42 41 47 50 47C59 47 62 42 62 37C62 29 54 25 54 19C54 17 52 15 50 15Z" fill="#C99532" fill-opacity="0.3"/>
+                <path d="M22 24L25 24L25 47L22 47Z" fill="#C99532" fill-opacity="0.25"/>
+                <path d="M75 24L78 24L78 47L75 47Z" fill="#C99532" fill-opacity="0.25"/>
+              </svg>
+            </div>
+            <div class="offers-header-lantern">
+              <svg width="26" height="48" viewBox="0 0 28 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="14" y1="0" x2="14" y2="8" stroke="#C99532" stroke-width="1.5"/>
+                <path d="M9 8H19L21 14H7L9 8Z" fill="#C99532"/>
+                <path d="M7 14L4 26L7 38H21L24 26L21 14H7Z" fill="url(#lanternGlowH)" stroke="#C99532" stroke-width="1"/>
+                <circle cx="14" cy="26" r="4" fill="#FFE599"/>
+                <path d="M7 38L10 44H18L21 38H7Z" fill="#C99532"/>
+                <path d="M12 44L14 49L16 44H12Z" fill="#C99532"/>
+                <defs>
+                  <radialGradient id="lanternGlowH" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(14 26) scale(12 14)">
+                    <stop stop-color="#FFF3C4"/>
+                    <stop offset="0.6" stop-color="#FCD34D"/>
+                    <stop offset="1" stop-color="#D97706"/>
+                  </radialGradient>
+                </defs>
+              </svg>
+            </div>
+            <div class="offers-header-quote">
+              <span class="quote-word">Shop Deen</span>
+              <span class="quote-word">Save More</span>
+              <span class="quote-word">Do More Good</span>
+              <div class="quote-ornament-line">
+                <span class="ornament-dash"></span>
+                <i class="fa-solid fa-diamond ornament-dot"></i>
+                <span class="ornament-dash"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Hero Ramadan Carousel Banner -->
+        <div class="ramadan-hero-banner">
+          <div class="ramadan-hero-content">
+            <span class="ramadan-tag">RAMADAN SPECIAL</span>
+            <h2 class="ramadan-heading">Upto<br>50% OFF</h2>
+            <p class="ramadan-sub">On Selected Islamic Products</p>
+            <button class="ramadan-shop-btn" onclick="UI.filterOffersCategory(null, 'ramadan')">
+              Shop Now <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="ramadan-hero-arch-box">
+            <div class="ramadan-arch-frame">
+              <div class="arch-inner-text">
+                <p class="arch-quote-lead">Prepare</p>
+                <p class="arch-quote-sub">Your Heart</p>
+                <p class="arch-quote-lead">This Ramadan</p>
+                <div class="arch-ornament">
+                  <span></span><i class="fa-solid fa-moon"></i><span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-dots-wrap">
+          <span class="carousel-dot active"></span>
+          <span class="carousel-dot"></span>
+          <span class="carousel-dot"></span>
+          <span class="carousel-dot"></span>
+        </div>
+
+        <!-- 3. Category Filter Pill Cards (Horizontal 5 Cards) -->
+        <div class="offers-filter-pills-row">
+          <div class="offer-cat-card active" onclick="UI.filterOffersCategory(this, 'all')">
+            <div class="offer-cat-icon-circle icon-percent"><i class="fa-solid fa-percent"></i></div>
+            <span class="offer-cat-label">All Offers</span>
+          </div>
+          <div class="offer-cat-card" onclick="UI.filterOffersCategory(this, 'ramadan')">
+            <div class="offer-cat-icon-circle icon-moon"><i class="fa-solid fa-moon"></i></div>
+            <span class="offer-cat-label">Ramadan Deals</span>
+          </div>
+          <div class="offer-cat-card" onclick="UI.filterOffersCategory(this, 'combo')">
+            <div class="offer-cat-icon-circle icon-combo"><i class="fa-solid fa-box-open"></i></div>
+            <span class="offer-cat-label">Combo Offers</span>
+          </div>
+          <div class="offer-cat-card" onclick="UI.filterOffersCategory(this, 'new')">
+            <div class="offer-cat-icon-circle icon-new">NEW</div>
+            <span class="offer-cat-label">New Arrivals</span>
+          </div>
+          <div class="offer-cat-card" onclick="UI.filterOffersCategory(this, 'bestsellers')">
+            <div class="offer-cat-icon-circle icon-star"><i class="fa-solid fa-star"></i></div>
+            <span class="offer-cat-label">Best Sellers</span>
+          </div>
+        </div>
+
+        <!-- 4. Special Combo Offers Middle Promo Banner -->
+        <div class="combo-promo-banner">
+          <div class="combo-promo-left">
+            <h3 class="combo-promo-title">Special Combo Offers</h3>
+            <p class="combo-promo-sub">More Deen. More Value.</p>
+            <button class="combo-promo-btn" onclick="UI.filterOffersCategory(null, 'combo')">
+              View Combos <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="combo-promo-right">
+            <div class="combo-gift-art">
+              <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=200&q=80" alt="Special Combo Gift" class="combo-gift-img">
+            </div>
+            <div class="combo-promo-slogan">
+              <span>Perfect</span>
+              <span>for You</span>
+              <span>& Your Loved Ones</span>
+              <div class="quote-ornament-line" style="margin-top:4px;">
+                <span class="ornament-dash"></span>
+                <i class="fa-solid fa-diamond ornament-dot"></i>
+                <span class="ornament-dash"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Today's Deals Section (Countdown Clock & Deal Cards) -->
+        <div id="todays-deals-section" class="todays-deals-wrap">
+          <div class="todays-deals-header-row">
+            <div class="todays-deals-title">
+              Today's Deals <span class="gold-dash-accent"></span>
+            </div>
+            <div class="deals-countdown-box">
+              <span class="countdown-label">Ends in</span>
+              <div class="countdown-clock-row">
+                <div class="clock-unit">
+                  <span id="countdown-h" class="clock-digit">12</span>
+                  <span class="clock-sublabel">Hours</span>
+                </div>
+                <span class="clock-colon">:</span>
+                <div class="clock-unit">
+                  <span id="countdown-m" class="clock-digit">18</span>
+                  <span class="clock-sublabel">Minutes</span>
+                </div>
+                <span class="clock-colon">:</span>
+                <div class="clock-unit">
+                  <span id="countdown-s" class="clock-digit">45</span>
+                  <span class="clock-sublabel">Seconds</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Deals Products Grid -->
+          <div id="offers-deals-grid" class="todays-deals-grid"></div>
+        </div>
+
+        <!-- 6. Value Proposition Split Banner -->
+        <div class="value-props-split-bar">
+          <div class="value-prop-col">
+            <div class="value-prop-icon icon-truck">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <div class="value-prop-texts">
+              <div class="value-prop-heading">Free Delivery on Orders Above ₹999</div>
+              <div class="value-prop-caption">Shop more. Save more. Spread goodness.</div>
+            </div>
+          </div>
+          <div class="value-prop-divider"></div>
+          <div class="value-prop-col right-col" onclick="UI.showToast('All gift orders include customized blessing cards & luxury wrapping!')">
+            <div class="value-prop-icon icon-gift">
+              <i class="fa-solid fa-gift"></i>
+            </div>
+            <div class="value-prop-texts">
+              <div class="value-prop-heading">Special Gift Wrapping</div>
+              <div class="value-prop-caption">For your loved ones</div>
+            </div>
+            <i class="fa-solid fa-chevron-right value-prop-arrow"></i>
+          </div>
+        </div>
+
+        <!-- 7. Featured Offers Section -->
+        <div class="featured-offers-section">
+          <div class="featured-offers-head">
+            <h3 class="featured-offers-title">Featured <span style="color:var(--color-gold);">Offers</span></h3>
+            <a href="javascript:void(0)" onclick="UI.filterOffersCategory(null, 'all')" class="featured-view-all">View All <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+          <div class="featured-offers-cards-row">
+            <!-- Card 1: Islamic Books -->
+            <div class="featured-promo-card card-books" onclick="Router.navigate('#categories'); UI.renderCategoryProducts('books')">
+              <div class="featured-card-info">
+                <div class="featured-card-tag">Islamic Books</div>
+                <div class="featured-card-discount">Flat 30% OFF</div>
+                <div class="featured-circle-arrow">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </div>
+              </div>
+              <div class="featured-card-media">
+                <img src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=240&q=80" alt="Islamic Books">
+              </div>
+            </div>
+
+            <!-- Card 2: Prayer Essentials -->
+            <div class="featured-promo-card card-prayer" onclick="Router.navigate('#categories'); UI.renderCategoryProducts('prayer-mats')">
+              <div class="featured-card-info">
+                <div class="featured-card-tag">Prayer Essentials</div>
+                <div class="featured-card-discount">Upto 40% OFF</div>
+                <div class="featured-circle-arrow">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </div>
+              </div>
+              <div class="featured-card-media">
+                <img src="https://images.unsplash.com/photo-1590076215667-875d4ef2d7ee?auto=format&fit=crop&w=240&q=80" alt="Prayer Essentials">
+              </div>
+            </div>
+
+            <!-- Card 3: Kids Collection -->
+            <div class="featured-promo-card card-kids" onclick="Router.navigate('#categories'); UI.renderCategoryProducts('kids-collection')">
+              <div class="featured-card-info">
+                <div class="featured-card-tag">Kids Collection</div>
+                <div class="featured-card-discount">Flat 25% OFF</div>
+                <div class="featured-circle-arrow">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </div>
+              </div>
+              <div class="featured-card-media">
+                <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=240&q=80" alt="Kids Collection">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================= VIEW 4: MY ORDERS ================= -->
+    <section id="view-orders" class="view-section">
+      <div class="app-container" style="padding-top:16px;">
+        
+        <!-- 1. Orders Page Header with Mosque Art & Quote (Ref Match) -->
+        <div class="orders-header-wrap">
+          <div class="orders-header-text">
+            <h1 class="orders-page-title">My Orders</h1>
+            <p class="orders-page-sub">Track your orders and keep shopping for what matters.</p>
+          </div>
+          <div class="orders-header-decoration">
+            <div class="orders-mosque-silhouette">
+              <svg width="84" height="60" viewBox="0 0 100 70" fill="none" class="mosque-svg">
+                <path d="M50 15C48 15 46 17 46 19C46 25 38 29 38 37C38 42 41 47 50 47C59 47 62 42 62 37C62 29 54 25 54 19C54 17 52 15 50 15Z" fill="#0E5A43" fill-opacity="0.25"/>
+                <path d="M22 24L25 24L25 47L22 47Z" fill="#0E5A43" fill-opacity="0.2"/>
+                <path d="M75 24L78 24L78 47L75 47Z" fill="#0E5A43" fill-opacity="0.2"/>
+                <path d="M68 6C68 3 71 2 73 1C72 3 73 5 75 6C73 6 70 6 68 6Z" fill="#C99532"/>
+              </svg>
+            </div>
+            <div class="orders-header-quote">
+              <span class="quote-word">Good</span>
+              <span class="quote-word">Deeds</span>
+              <span class="quote-word">Always</span>
+              <span class="quote-word">Return</span>
+              <div class="quote-ornament-line">
+                <span class="ornament-dash"></span>
+                <i class="fa-solid fa-diamond ornament-dot"></i>
+                <span class="ornament-dash"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Orders Status Filter Tabs (5 Exact Tabs from Screenshot) -->
+        <div class="orders-filter-bar">
+          <button class="order-filter-pill active" onclick="UI.filterOrdersTab(this, 'all')">
+            <i class="fa-solid fa-bag-shopping"></i> All Orders
+          </button>
+          <button class="order-filter-pill" onclick="UI.filterOrdersTab(this, 'pending')">
+            <i class="fa-regular fa-clock"></i> Pending
+          </button>
+          <button class="order-filter-pill" onclick="UI.filterOrdersTab(this, 'processing')">
+            <i class="fa-solid fa-box-archive"></i> Processing
+          </button>
+          <button class="order-filter-pill" onclick="UI.filterOrdersTab(this, 'delivered')">
+            <i class="fa-regular fa-circle-check"></i> Delivered
+          </button>
+          <button class="order-filter-pill" onclick="UI.filterOrdersTab(this, 'cancelled')">
+            <i class="fa-regular fa-circle-xmark"></i> Cancelled
+          </button>
+        </div>
+
+        <!-- 3. Dynamic Orders List (Matches Exact Reference Cards) -->
+        <div id="my-orders-list"></div>
+
+        <!-- 4. Need Help Support Banner (WhatsApp Support) -->
+        <div class="order-help-card">
+          <div class="order-help-left">
+            <div class="order-help-icon">
+              <i class="fa-solid fa-headset"></i>
+            </div>
+            <div>
+              <h4 class="order-help-title">Need Help with Your Order?</h4>
+              <p class="order-help-sub">We're here for you. Contact us on WhatsApp anytime.</p>
+            </div>
+          </div>
+          <a href="https://wa.me/919561762651?text=Salam!%20I%20need%20help%20with%20my%20DeenKart%20order." target="_blank" class="order-help-btn">
+            <i class="fa-brands fa-whatsapp" style="font-size:1rem;"></i> Chat on WhatsApp
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================= VIEW 5: PROFILE ("MY ACCOUNT") ================= -->
+    <section id="view-profile" class="view-section">
+      <div class="app-container" style="padding-top:16px;">
+        <div style="margin-bottom:14px;">
+          <h1 style="font-size:1.45rem; font-weight:800; color:var(--color-charcoal); margin-bottom:2px;">My Profile</h1>
+          <p style="font-size:0.84rem; color:var(--color-charcoal-muted);">Manage your account, orders and more</p>
+        </div>
+
+        <!-- 1. Profile Hero Card (Avatar with Camera Badge + User Info + Edit Profile Button) -->
+        <div class="profile-hero-card">
+          <img src="assets/images/logo.png" alt="DeenKart" class="profile-hero-banner">
+          <div class="profile-user-row">
+            <div style="display:flex; align-items:center; gap:14px; min-width:0;">
+              <div class="profile-avatar-wrapper">
+                <div class="profile-avatar-circle">T</div>
+                <div class="profile-avatar-badge">
+                  <i class="fa-solid fa-camera"></i>
+                </div>
+              </div>
+              <div class="profile-user-info">
+                <h2 id="profile-name" class="profile-user-title">Tausif Shaikh</h2>
+                <p id="profile-email" class="profile-user-email">tausifshaikh06@gmail.com</p>
+                <span id="profile-phone" class="profile-user-phone">+91 98765 43210</span>
+              </div>
+            </div>
+            <button class="profile-edit-btn" onclick="Router.navigate('#checkout')">
+              <i class="fa-solid fa-pen-to-square"></i> Edit Profile
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Profile 4-Column Stats Row with Dividers -->
+        <div class="profile-stats-bar">
+          <div class="profile-stat-item" onclick="Router.navigate('#orders')">
+            <i class="fa-solid fa-box-archive profile-stat-icon"></i>
+            <div id="profile-orders-count" class="profile-stat-num">12</div>
+            <div class="profile-stat-txt">Total Orders</div>
+          </div>
+          <div class="profile-stat-item" onclick="Router.navigate('#wishlist')">
+            <i class="fa-regular fa-heart profile-stat-icon"></i>
+            <div id="profile-wishlist-count" class="profile-stat-num">8</div>
+            <div class="profile-stat-txt">Wishlist Items</div>
+          </div>
+          <div class="profile-stat-item" onclick="Router.navigate('#checkout')">
+            <i class="fa-solid fa-location-dot profile-stat-icon"></i>
+            <div class="profile-stat-num">3</div>
+            <div class="profile-stat-txt">Saved Addresses</div>
+          </div>
+          <div class="profile-stat-item">
+            <i class="fa-solid fa-star profile-stat-icon" style="color:var(--color-gold);"></i>
+            <div class="profile-stat-num">120</div>
+            <div class="profile-stat-txt">Reward Points</div>
+          </div>
+        </div>
+
+        <!-- 3. Action Menu Cards List (Exact Reference Match) -->
+        <div class="profile-menu-card">
+          <!-- My Orders -->
+          <div class="profile-menu-row" onclick="Router.navigate('#orders')">
+            <div class="profile-menu-left">
+              <div class="profile-menu-icon">
+                <i class="fa-regular fa-clipboard"></i>
+              </div>
+              <div class="profile-menu-texts">
+                <div class="profile-menu-title">My Orders</div>
+                <div class="profile-menu-sub">Track, return or buy again</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
+          </div>
+
+          <!-- My Wishlist -->
+          <div class="profile-menu-row" onclick="Router.navigate('#wishlist')">
+            <div class="profile-menu-left">
+              <div class="profile-menu-icon">
+                <i class="fa-regular fa-heart"></i>
+              </div>
+              <div class="profile-menu-texts">
+                <div class="profile-menu-title">My Wishlist</div>
+                <div class="profile-menu-sub">Items you saved</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
+          </div>
+
+          <!-- Saved Addresses -->
+          <div class="profile-menu-row" onclick="Router.navigate('#checkout')">
+            <div class="profile-menu-left">
+              <div class="profile-menu-icon">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div class="profile-menu-texts">
+                <div class="profile-menu-title">Saved Addresses</div>
+                <div class="profile-menu-sub">Manage your delivery addresses in Shikrapur</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
+          </div>
+
+          <!-- Payment Methods -->
+          <div class="profile-menu-row" onclick="alert('💳 Payment Mode: Cash on Delivery & Direct UPI via WhatsApp. No card details needed!')">
+            <div class="profile-menu-left">
+              <div class="profile-menu-icon">
+                <i class="fa-solid fa-credit-card"></i>
+              </div>
+              <div class="profile-menu-texts">
+                <div class="profile-menu-title">Payment Methods</div>
+                <div class="profile-menu-sub">Cards, UPI and more</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
+          </div>
+
+          <!-- Notifications -->
+          <div class="profile-menu-row" onclick="Router.navigate('#notifications')">
+            <div class="profile-menu-left">
+              <div class="profile-menu-icon">
+                <i class="fa-regular fa-bell"></i>
+              </div>
+              <div class="profile-menu-texts">
+                <div class="profile-menu-title">Notifications</div>
+                <div class="profile-menu-sub">Offers, updates and order alerts</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
+          </div>
+
+          <!-- App Settings / Install -->
+          <div class="profile-menu-row" onclick="triggerPwaInstall()">
+            <div class="profile-menu-left">
+              <div class="profile-menu-icon">
+                <i class="fa-solid fa-gear"></i>
+              </div>
+              <div class="profile-menu-texts">
+                <div class="profile-menu-title">App Settings & Install</div>
+                <div class="profile-menu-sub">Install app, theme and preferences</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
+          </div>
+
+          <!-- Help & Support -->
+          <div class="profile-menu-row" onclick="window.open('https://wa.me/919561762651', '_blank')">
+            <div class="profile-menu-left">
+              <div class="profile-menu-icon" style="background:#DCFCE7; color:#15803D;">
+                <i class="fa-regular fa-circle-question"></i>
+              </div>
+              <div class="profile-menu-texts">
+                <div class="profile-menu-title">Help & Support</div>
+                <div class="profile-menu-sub">Get help, contact us via WhatsApp</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
+          </div>
+
+          <!-- Logout / Reset -->
+          <div class="profile-menu-row" onclick="handleClearProfile()">
+            <div class="profile-menu-left">
+              <div class="profile-menu-icon" style="background:#FEE2E2; color:#DC2626;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              </div>
+              <div class="profile-menu-texts">
+                <div class="profile-menu-title" style="color:#DC2626;">Logout</div>
+                <div class="profile-menu-sub">Sign out from your account / Reset device cache</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right profile-menu-chevron"></i>
+          </div>
+        </div>
+
+        <!-- 4. Islamic Surah Quote Card at the bottom (Exact Reference Match) -->
+        <div class="quote-banner-card" style="margin-bottom:28px;">
+          <div class="quote-icon-circle">
+            <i class="fa-solid fa-book-quran"></i>
+          </div>
+          <div class="quote-text" style="font-family:var(--font-serif); font-size:0.95rem; font-style:italic; margin-bottom:4px;">
+            "And whoever puts his trust in Allah, then He is sufficient for him."
+          </div>
+          <div class="quote-citation" style="font-size:0.75rem; color:var(--color-gold-dark); font-weight:700;">
+            Surah At-Talaq (65:3)
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================= VIEW 6: SEARCH RESULTS ================= -->
+    <section id="view-search" class="view-section">
+      <div class="app-container search-view-container" style="padding-top:10px;">
+        
+        <!-- 1. Search Bar with Back Button, Input & Clear Button (Exact Reference Match) -->
+        <div class="search-top-nav-bar">
+          <button class="search-nav-back-btn" onclick="history.back() || Router.navigate('#home')" aria-label="Go Back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="search-box-pill">
+            <i class="fa-solid fa-magnifying-glass search-pill-icon"></i>
+            <input type="text" id="view-search-input" placeholder="Search Qur'an, Tasbih, Attar, Abaya..." autocomplete="off">
+            <button id="view-search-clear-btn" class="search-pill-clear" onclick="clearSearchInput()" aria-label="Clear Search">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Search Results Heading & Sort By Button -->
+        <div class="search-results-meta-bar">
+          <div class="search-results-meta-left">
+            <h1 class="search-results-title">Search Results</h1>
+            <p id="search-results-count" class="search-results-subtitle">Showing results</p>
+          </div>
+          <div class="search-results-meta-right">
+            <div class="sort-menu-container">
+              <button id="search-sort-btn" class="search-sort-pill-btn" onclick="toggleSortDropdown(event)">
+                <i class="fa-solid fa-arrow-down-short-wide"></i> Sort By
+              </button>
+              <div id="search-sort-dropdown" class="search-sort-dropdown-box">
+                <div class="sort-dropdown-item active" onclick="applySearchSort('popular')">
+                  <span>Popularity</span>
+                  <i class="fa-solid fa-check sort-check"></i>
+                </div>
+                <div class="sort-dropdown-item" onclick="applySearchSort('price-low')">
+                  <span>Price: Low to High</span>
+                  <i class="fa-solid fa-check sort-check"></i>
+                </div>
+                <div class="sort-dropdown-item" onclick="applySearchSort('price-high')">
+                  <span>Price: High to Low</span>
+                  <i class="fa-solid fa-check sort-check"></i>
+                </div>
+                <div class="sort-dropdown-item" onclick="applySearchSort('rating')">
+                  <span>Highest Rated</span>
+                  <i class="fa-solid fa-check sort-check"></i>
+                </div>
+                <div class="sort-dropdown-item" onclick="applySearchSort('discount')">
+                  <span>Biggest Discount</span>
+                  <i class="fa-solid fa-check sort-check"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Horizontal Filter Sub-pills (All, Arabic, Translation, Tafsir, Kids, With Cover) -->
+        <div class="search-subfilter-bar">
+          <button class="search-subfilter-pill active" onclick="applySearchSubFilter(this, 'all')">All</button>
+          <button class="search-subfilter-pill" onclick="applySearchSubFilter(this, 'arabic')">Arabic</button>
+          <button class="search-subfilter-pill" onclick="applySearchSubFilter(this, 'translation')">Translation</button>
+          <button class="search-subfilter-pill" onclick="applySearchSubFilter(this, 'tafsir')">Tafsir</button>
+          <button class="search-subfilter-pill" onclick="applySearchSubFilter(this, 'kids')">Kids</button>
+          <button class="search-subfilter-pill" onclick="applySearchSubFilter(this, 'with-cover')">With Cover</button>
+        </div>
+
+        <!-- 4. 2-Column Product Cards Grid (Matching media_1788617048276.png) -->
+        <div id="search-results-grid" class="search-results-grid"></div>
+
+      </div>
+    </section>
+
+
+    <!-- ================= VIEW 7: WISHLIST ================= -->
+    <section id="view-wishlist" class="view-section">
+      <div class="app-container" style="padding-top:16px;">
+        <div style="margin-bottom:16px;">
+          <h1 style="font-size:1.4rem; font-weight:800; color:var(--color-charcoal); margin-bottom:4px;">My Wishlist</h1>
+          <p style="font-size:0.86rem; color:var(--color-charcoal-muted);">Items you saved for future blessings</p>
+        </div>
+        <div id="wishlist-products-grid" class="products-grid"></div>
+      </div>
+    </section>
+
+
+    <!-- ================= VIEW 8: NOTIFICATIONS ================= -->
+    <section id="view-notifications" class="view-section">
+      <div class="app-container" style="padding-top:16px;">
+        <div style="margin-bottom:16px;">
+          <h1 style="font-size:1.4rem; font-weight:800; color:var(--color-charcoal); margin-bottom:4px;">Notifications</h1>
+          <p style="font-size:0.86rem; color:var(--color-charcoal-muted);">Store announcements and delivery updates</p>
+        </div>
+        <div id="notifications-list"></div>
+      </div>
+    </section>
+
+
+    <!-- ================= VIEW 9: CHECKOUT (SIMPLIFIED - NO PAYMENT METHOD CARD!) ================= -->
+    <section id="view-checkout" class="view-section">
+      <div class="app-container" style="padding-top:16px; max-width: 650px;">
+        <div style="margin-bottom:14px; text-align:center;">
+          <h1 style="font-size:1.5rem; font-weight:800; color:var(--color-charcoal);">Checkout</h1>
+          <p style="font-size:0.85rem; color:var(--color-charcoal-muted);">Direct doorstep delivery in Shikrapur & Shirur Taluka, Maharashtra</p>
+        </div>
+
+        <!-- Free Delivery Progress Bar -->
+        <div class="free-shipping-progress-box">
+          <div style="display:flex; align-items:center; gap:8px; font-size:0.85rem; font-weight:700; color:var(--color-emerald);">
+            <i class="fa-solid fa-truck-fast"></i>
+            <span id="free-shipping-text">Free Delivery on Orders Above ₹499 in Shikrapur & Shirur Taluka</span>
+          </div>
+          <div class="progress-track">
+            <div id="free-shipping-bar" class="progress-bar" style="width: 60%;"></div>
+          </div>
+        </div>
+
+        <!-- Card 1: Delivery Address with Compulsory GPS Location -->
+        <div class="checkout-card">
+          <div class="checkout-card-header">
+            <div class="checkout-card-title">
+              <i class="fa-solid fa-location-dot text-emerald"></i> Delivery Address
+            </div>
+            <span class="discount-pill-badge" style="position:static; font-size:0.7rem;">Shikrapur & Shirur Taluka</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div>
+              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">Full Name *</label>
+              <input type="text" id="checkout-name" placeholder="e.g. Tausif Shaikh" required class="form-control">
+            </div>
+            <div>
+              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">WhatsApp Number *</label>
+              <input type="tel" id="checkout-phone" placeholder="e.g. 9876543210" required class="form-control">
+            </div>
+          </div>
+
+          <div style="margin-bottom:12px;">
+            <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">House / Flat / Building *</label>
+            <input type="text" id="checkout-house" placeholder="Flat No., Wing, Building Name" required class="form-control">
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div>
+              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">Area / Street *</label>
+              <input type="text" id="checkout-area" placeholder="Naya Nagar / Main Road" required class="form-control">
+            </div>
+            <div>
+              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">Landmark (Optional)</label>
+              <input type="text" id="checkout-landmark" placeholder="Near Jama Masjid" class="form-control">
+            </div>
+          </div>
+
+          <!-- COMPULSORY GOOGLE MAPS LOCATION -->
+          <div style="margin-bottom:14px; background:var(--color-soft-green); border:1px solid var(--color-soft-green-border); border-radius:var(--radius-md); padding:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <label style="font-size:0.78rem; font-weight:700; color:var(--color-emerald);">
+                📍 Google Maps Location (Compulsory) *
+              </label>
+              <button type="button" class="btn btn-primary btn-sm" onclick="UI.detectCurrentLocation()" style="width:auto; padding:4px 10px; font-size:0.75rem; border-radius:var(--radius-full);">
+                <i class="fa-solid fa-location-crosshairs"></i> Detect My Location
+              </button>
+            </div>
+            <input type="url" id="checkout-location-link" placeholder="https://maps.google.com/?q=... or click Detect" required class="form-control" style="background:#fff;">
+            <div style="font-size:0.72rem; color:var(--color-charcoal-muted); margin-top:4px;">
+              Enables our Shikrapur delivery rider to reach your doorstep directly without calling.
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div>
+              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">Pincode</label>
+              <input type="text" value="412208 (Shikrapur)" readonly class="form-control" style="background:#F8F7F4; color:#64748B;">
+            </div>
+            <div>
+              <label style="font-size:0.78rem; font-weight:700; color:var(--color-charcoal);">Order Notes (Optional)</label>
+              <input type="text" id="checkout-notes" placeholder="Delivery notes..." class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Order Items & Price Summary -->
+        <div class="checkout-card">
+          <div class="checkout-card-header">
+            <div class="checkout-card-title">
+              <i class="fa-solid fa-receipt text-emerald"></i> Order Summary
+            </div>
+          </div>
+
+          <div id="checkout-order-items"></div>
+
+          <div style="padding-top:14px; margin-top:10px;">
+            <div style="display:flex; justify-content:space-between; font-size:0.88rem; margin-bottom:6px;">
+              <span class="text-muted">Subtotal</span>
+              <span id="checkout-subtotal" style="font-weight:700;">₹0</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.88rem; margin-bottom:6px;">
+              <span class="text-muted">Delivery Charges (Shikrapur)</span>
+              <span id="checkout-delivery" style="font-weight:700; color:var(--color-emerald);">FREE</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.88rem; margin-bottom:12px;">
+              <span class="text-muted">Discount (WELCOME10)</span>
+              <span id="checkout-discount" style="font-weight:700; color:#DC2626;">-₹0</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:1.15rem; font-weight:800; border-top:1px solid var(--color-border); padding-top:10px;">
+              <span>Total Amount</span>
+              <span id="checkout-total" class="text-emerald">₹0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Place Order Button -->
+        <button class="btn btn-primary" style="padding:16px; font-size:1rem; border-radius:var(--radius-full); margin-bottom:8px;" onclick="UI.executeWhatsAppOrder()">
+          <i class="fa-brands fa-whatsapp" style="font-size:1.3rem;"></i> Place Order on WhatsApp ⚡
+        </button>
+        <p style="text-align:center; font-size:0.75rem; color:var(--color-charcoal-muted); margin-bottom:24px;">
+          Your order and GPS location will be sent directly to our Shikrapur store on WhatsApp.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ================= VIEW 10: ORDER SUCCESS ================= -->
+    <section id="view-order-success" class="view-section">
+      <div class="app-container" style="padding: 32px 16px; max-width:580px; text-align:center;">
+        <div style="width:72px; height:72px; border-radius:50%; background:var(--color-soft-green); color:var(--color-emerald); display:inline-flex; align-items:center; justify-content:center; font-size:2.2rem; margin-bottom:16px;">
+          <i class="fa-solid fa-check"></i>
+        </div>
+
+        <h1 style="font-size:1.5rem; font-weight:800; color:var(--color-charcoal); margin-bottom:6px;">Order Sent to WhatsApp! 🎉</h1>
+        <p style="font-size:0.88rem; color:var(--color-charcoal-muted); margin-bottom:20px;">
+          Your order has been launched on WhatsApp. Please tap 'Send' in WhatsApp to confirm!
+        </p>
+
+        <div style="background:var(--color-white); border:1px solid var(--color-border); border-radius:var(--radius-xl); padding:20px; text-align:left; margin-bottom:24px; box-shadow:var(--shadow-sm);">
+          <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid var(--color-border-subtle); padding-bottom:8px;">
+            <span class="text-muted">Order ID:</span>
+            <strong id="success-order-id" class="text-emerald">DK-XXXX</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid var(--color-border-subtle); padding-bottom:8px;">
+            <span class="text-muted">Total Amount:</span>
+            <strong id="success-order-total" style="font-size:1.1rem;">₹0</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span class="text-muted">Status:</span>
+            <span class="discount-pill-badge" style="position:static; background:#FEF3C7; color:#B45309;">Order Placed</span>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px;">
+          <button class="btn btn-outline" style="flex:1; border-radius:var(--radius-full);" onclick="Router.navigate('#orders')">
+            View Orders
+          </button>
+          <button class="btn btn-primary" style="flex:1; border-radius:var(--radius-full);" onclick="Router.navigate('#home')">
+            Continue Shopping
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 6. Product Details Modal / Bottom Sheet -->
+  <div id="product-modal" class="modal-backdrop">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="UI.closeProductModal()" aria-label="Close Product Details">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="product-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Order Details & Tracking Modal -->
+  <div id="order-modal" class="modal-backdrop">
+    <div class="modal-box" style="max-width:520px;">
+      <button class="modal-close-btn" onclick="UI.closeOrderModal()" aria-label="Close Order Details">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="order-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- 7. Floating Bottom Navigation Pill Bar (Exact Match to Reference Images) -->
+  <nav class="mobile-bottom-nav">
+    <a href="#home" class="bottom-nav-item active" data-route="home">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="#categories" class="bottom-nav-item" data-route="categories">
+      <i class="fa-solid fa-table-cells-large"></i>
+      <span>Categories</span>
+    </a>
+    <a href="#offers" class="bottom-nav-item" data-route="offers">
+      <i class="fa-solid fa-tags"></i>
+      <span>Offers</span>
+    </a>
+    <a href="#orders" class="bottom-nav-item" data-route="orders">
+      <i class="fa-solid fa-box-archive"></i>
+      <span>Orders</span>
+    </a>
+    <a href="#profile" class="bottom-nav-item" data-route="profile">
+      <i class="fa-regular fa-user"></i>
+      <span>Account</span>
+    </a>
+  </nav>
+
+  <!-- 8. Site Footer -->
+  <footer class="site-footer">
+    <div class="app-container">
+      <!-- Desktop Grid (Hidden on Mobile) -->
+      <div class="footer-grid">
+        <div>
+          <img src="assets/images/logo-footer.png?v=1.0.8" alt="DeenKart" style="height:48px; margin-bottom:12px; object-fit:contain;">
+          <h3 style="color:#fff; font-size:1.1rem; margin-bottom:6px;">DeenKart</h3>
+          <p style="font-size:0.84rem; color:#94A3B8; margin:0;">Islamic Essentials for a Better Tomorrow. Serving believers in Shikrapur & Shirur Taluka, Maharashtra.</p>
+        </div>
+        <div>
+          <h4 style="color:var(--color-gold); font-size:0.9rem; margin-bottom:12px;">Quick Links</h4>
+          <ul style="list-style:none; padding:0; margin:0; font-size:0.84rem; line-height:2;">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#categories">All Categories</a></li>
+            <li><a href="#offers">Special Offers</a></li>
+            <li><a href="#orders">My Orders</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color:var(--color-gold); font-size:0.9rem; margin-bottom:12px;">Store Location</h4>
+          <p style="font-size:0.84rem; color:#94A3B8; margin-bottom:8px;">
+            <i class="fa-solid fa-location-dot text-gold"></i> Shikrapur, Shirur Taluka, Maharashtra - 412208
+          </p>
+          <p style="font-size:0.84rem; color:#94A3B8; margin-bottom:12px;">
+            <a href="https://wa.me/919561762651" target="_blank" style="color:#94A3B8; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fa-brands fa-whatsapp text-emerald"></i> Quick WhatsApp Support
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Compact Mobile & Desktop Bottom Bar -->
+      <div class="footer-bottom">
+        <div class="footer-bottom-brand">
+          <img src="assets/images/logo-footer.png?v=1.0.8" alt="DeenKart" style="height:34px; object-fit:contain;">
+          <span>© 2026 DeenKart. Made with Barakah</span>
+        </div>
+        <p class="footer-delivering-tag">Fast delivery in Shikrapur & delivery in Shirur Taluka only</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts with Cache Busters -->
+  <script src="assets/js/config.js?v=1.0.7"></script>
+  <script src="assets/js/products-data.js?v=1.0.7"></script>
+  <script src="assets/js/storage.js?v=1.0.7"></script>
+  <script src="assets/js/whatsapp.js?v=1.0.7"></script>
+  <script src="assets/js/cart.js?v=1.0.7"></script>
+  <script src="assets/js/ui.js?v=1.0.7"></script>
+  <script src="assets/js/router.js?v=1.0.7"></script>
+  <script src="assets/js/app.js?v=1.0.7"></script>
+</body>
+</html>

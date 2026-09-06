@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeenKart — Store Admin Panel</title>
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- Admin Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <img src="assets/images/logo.png" alt="DeenKart Admin">
+    </div>
+
+    <nav class="admin-menu">
+      <button class="admin-menu-item active" onclick="switchAdminTab('dashboard')">
+        <i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span>
+      </button>
+      <button class="admin-menu-item" onclick="switchAdminTab('products')">
+        <i class="fa-solid fa-book-quran"></i> <span>Products</span>
+      </button>
+      <button class="admin-menu-item" onclick="switchAdminTab('orders')">
+        <i class="fa-solid fa-box-archive"></i> <span>Orders</span>
+      </button>
+      <button class="admin-menu-item" onclick="switchAdminTab('offers')">
+        <i class="fa-solid fa-percent"></i> <span>Offers</span>
+      </button>
+      <a href="index.html" class="admin-menu-item" style="margin-top: auto; color: var(--color-gold);">
+        <i class="fa-solid fa-arrow-left"></i> <span>Back to Store Front</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="admin-main">
+    <header class="admin-header">
+      <div class="admin-title" id="admin-page-title">Dashboard Overview</div>
+      <div style="font-size: 13px; font-weight: 700; color: var(--color-charcoal-muted);">
+        Shikrapur Store Admin 🌿
+      </div>
+    </header>
+
+    <div class="admin-content" id="admin-tab-content">
+      <!-- Dynamic Admin Views -->
+    </div>
+  </main>
+
+  <!-- Add / Edit Product Modal -->
+  <div class="modal-backdrop" id="product-modal-backdrop">
+    <div class="admin-modal">
+      <div class="modal-header">
+        <h3 style="font-size: 16px; font-weight: 800;" id="product-modal-title">Add New Islamic Product</h3>
+        <button style="border:none; background:none; font-size:18px; cursor:pointer;" onclick="closeProductModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="product-form">
+          <input type="hidden" id="p-id">
+          
+          <div class="form-group">
+            <label>Product Name *</label>
+            <input type="text" id="p-name" class="form-control" required placeholder="e.g. The Noble Qur'an (English)">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="p-category" class="form-control" required>
+                <option value="quran-translations">Qur'an & Translations</option>
+                <option value="islamic-books">Islamic Books</option>
+                <option value="prayer-mats">Prayer Mats (Sajjadah)</option>
+                <option value="tasbih-accessories">Tasbih & Misbaha</option>
+                <option value="attar-fragrance">Attar & Fragrances</option>
+                <option value="hijab-abaya">Hijab & Abaya</option>
+                <option value="mens-wear">Men's Wear & Jubba</option>
+                <option value="topi-caps">Topi / Prayer Caps</option>
+                <option value="kids-collection">Kids Collection</option>
+                <option value="gifts-combos">Gifts & Combos</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Stock Qty *</label>
+              <input type="number" id="p-stock" class="form-control" required placeholder="25">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label>Selling Price (₹) *</label>
+              <input type="number" id="p-price" class="form-control" required placeholder="599">
+            </div>
+            <div class="form-group">
+              <label>Original Price (₹)</label>
+              <input type="number" id="p-original" class="form-control" placeholder="799">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Image URL *</label>
+            <input type="url" id="p-image" class="form-control" required placeholder="https://images.unsplash.com/...">
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="p-desc" class="form-control" rows="3" placeholder="Authentic Islamic item description..."></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <button type="button" class="btn btn-outline" style="width: auto;" onclick="closeProductModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" style="width: auto;">Save Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/products-data.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/whatsapp.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

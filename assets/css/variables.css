@@ -1,0 +1,73 @@
+/* DeenKart Design System Variables */
+:root {
+  /* Color Palette - Exactly matching brand specifications */
+  --color-ivory: #FFFCF7;
+  --color-white: #FFFFFF;
+  --color-charcoal: #17211D;
+  --color-charcoal-light: #2C3A34;
+  --color-charcoal-muted: #5E6D66;
+  --color-emerald: #0E5A43;
+  --color-emerald-dark: #093E2E;
+  --color-emerald-light: #167A5C;
+  --color-soft-green: #EAF3EE;
+  --color-soft-green-border: #D2E4D9;
+  --color-gold: #C99532;
+  --color-gold-dark: #A97A22;
+  --color-gold-light: #DFAB48;
+  --color-soft-gold: #F5E8C8;
+  --color-soft-gold-light: #FAF4E4;
+  --color-border: #E9E4DA;
+  --color-border-subtle: #F2EFE9;
+  --color-gray-bg: #F8F7F4;
+  --color-gray-card: #FAF9F6;
+  
+  /* Status Colors */
+  --color-success: #15803D;
+  --color-success-bg: #E8F5E9;
+  --color-warning: #B45309;
+  --color-warning-bg: #FEF3C7;
+  --color-danger: #DC2626;
+  --color-danger-bg: #FEE2E2;
+  --color-info: #0369A1;
+  --color-info-bg: #E0F2FE;
+
+  /* Typography */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-arabic: 'Amiri', 'Traditional Arabic', serif;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-2xl: 24px;
+  --space-3xl: 32px;
+  --space-4xl: 48px;
+
+  /* Border Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(23, 33, 29, 0.05);
+  --shadow-md: 0 4px 12px rgba(23, 33, 29, 0.07);
+  --shadow-lg: 0 10px 25px rgba(23, 33, 29, 0.09);
+  --shadow-gold: 0 4px 14px rgba(201, 149, 50, 0.2);
+  --shadow-emerald: 0 4px 14px rgba(14, 90, 67, 0.25);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.35s ease;
+
+  /* Layout Widths */
+  --max-content-width: 1240px;
+  --bottom-nav-height: 64px;
+}

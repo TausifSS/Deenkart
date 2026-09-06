@@ -1,0 +1,306 @@
+/* ===================================================
+   DeenKart - Core Base & Layout Styles (style.css)
+   =================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-ivory);
+  color: var(--color-charcoal);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Base Links & Buttons */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--color-charcoal);
+  outline: none;
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--color-emerald);
+  box-shadow: 0 0 0 3px rgba(14, 90, 67, 0.12);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Layout Containers */
+.app-container {
+  width: 100%;
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.main-content {
+  flex: 1;
+  padding-bottom: calc(var(--bottom-nav-height) + 24px); /* Clearance for mobile bottom nav */
+}
+
+@media (min-width: 992px) {
+  .main-content {
+    padding-bottom: 48px;
+  }
+}
+
+/* View Containers */
+.view-section {
+  display: none;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.view-section.active {
+  display: block;
+  opacity: 1;
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Typography Utilities */
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-arabic {
+  font-family: var(--font-arabic);
+}
+
+.text-gold {
+  color: var(--color-gold);
+}
+
+.text-emerald {
+  color: var(--color-emerald);
+}
+
+.text-muted {
+  color: var(--color-charcoal-muted);
+}
+
+/* Common Section Headers */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 0 14px;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-charcoal);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 1.45rem;
+  }
+}
+
+.section-link {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-emerald);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap var(--transition-fast);
+}
+
+.section-link:hover {
+  gap: 8px;
+  color: var(--color-emerald-dark);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-primary {
+  background-color: var(--color-emerald);
+  color: var(--color-white);
+  box-shadow: var(--shadow-emerald);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-emerald-dark);
+}
+
+.btn-gold {
+  background-color: var(--color-gold);
+  color: var(--color-white);
+  box-shadow: var(--shadow-gold);
+}
+
+.btn-gold:hover {
+  background-color: var(--color-gold-dark);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-charcoal);
+}
+
+.btn-outline:hover {
+  border-color: var(--color-emerald);
+  color: var(--color-emerald);
+  background-color: var(--color-soft-green);
+}
+
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-gold {
+  background-color: var(--color-gold);
+  color: var(--color-white);
+}
+
+.badge-discount {
+  background-color: #FEE2E2;
+  color: #DC2626;
+  border-radius: var(--radius-xs);
+  font-weight: 700;
+}
+
+.badge-discount-green {
+  background-color: var(--color-soft-green);
+  color: var(--color-emerald);
+  font-weight: 700;
+}
+
+.badge-status {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge-status.Delivered {
+  background-color: #DCFCE7;
+  color: #15803D;
+}
+
+.badge-status.Shipped, .badge-status.Out-for-Delivery {
+  background-color: #E0F2FE;
+  color: #0369A1;
+}
+
+.badge-status.Processing, .badge-status.Preparing {
+  background-color: #FEF3C7;
+  color: #B45309;
+}
+
+.badge-status.Pending, .badge-status.Payment-Pending {
+  background-color: #F1F5F9;
+  color: #475569;
+}
+
+.badge-status.Cancelled {
+  background-color: #FEE2E2;
+  color: #DC2626;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-ivory);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D8D2C6;
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
